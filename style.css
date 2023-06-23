@@ -7,6 +7,7 @@ body {
     font-family: 'Podkova', serif;
     background: #3761A8;
     color: white;
+    padding: 1em 0;
 }
 
 .page__title {
@@ -18,31 +19,13 @@ body {
     text-transform: capitalize;
 }
 
-.pokemon__catch {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow: hidden;
-    margin-top: 1em;
-    font-family: pol;
-}
-
 .pokemon__card__outer {
-    display: flex;
-    justify-content: center;
     flex-wrap: wrap;
     margin: 0 auto;
 }
 
-
-
-.pokemon__card__outer:nth-child(2) .pokemon__card {
-    scale: 1.2;
-}
-
-
-
 .pokemon__card {
-    width: 80%;
+    margin: 0 auto;
     border-radius: 42.4px;
     background: var(--card__background);
     padding: 1em;
@@ -75,6 +58,7 @@ body {
 
 
 .action__button {
+    width: calc(100% - 2em);
     border-radius: 7px;
     background: #FF3D00;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
