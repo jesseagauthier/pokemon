@@ -1,0 +1,37 @@
+:root {
+    --card__radius: 42.4px 42.4px 0px 0px;
+    --card__background: #574260;
+}
+
+
+.pokemon__catch {
+    overflow: hidden;
+    justify-content: center;
+    margin-top: 1em;
+}
+
+.pokemon__card {
+    width: 80%;
+    border-radius: var(--card__radius);
+    background: var(--card__background);
+    padding: 1em;
+}
+
+.pokemon__card .pokemon__img {
+    padding: 0 1em;
+}
+
+.pokemon__card__inner .card-title {
+    background-color: red;
+    width: 100%;
+    text-align: center;
+    color: white;
+    padding: 1rem 0;
+    border-radius: var(--card__radius);
+}
+
+.pokemon__card__inner .icon {
+    font-size: 2em;
+    padding: 0 20px;
+    cursor: pointer;
+}
