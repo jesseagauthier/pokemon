@@ -3,16 +3,47 @@
     --card__background: #574260;
 }
 
+body {
+    font-family: 'Podkova', serif;
+    background: #3761A8;
+    color: white;
+}
+
+.page__title {
+    margin: .50em 0;
+    color: #FFF;
+    text-align: center;
+    font-size: 3.25rem;
+    font-family: Podkova;
+    text-transform: capitalize;
+}
 
 .pokemon__catch {
+    display: flex;
+    flex-wrap: nowrap;
     overflow: hidden;
-    justify-content: center;
     margin-top: 1em;
+    font-family: pol;
 }
+
+.pokemon__card__outer {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 0 auto;
+}
+
+
+
+.pokemon__card__outer:nth-child(2) .pokemon__card {
+    scale: 1.2;
+}
+
+
 
 .pokemon__card {
     width: 80%;
-    border-radius: var(--card__radius);
+    border-radius: 42.4px;
     background: var(--card__background);
     padding: 1em;
 }
@@ -28,10 +59,30 @@
     color: white;
     padding: 1rem 0;
     border-radius: var(--card__radius);
+    color: #FFF;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 500;
+    letter-spacing: 0.42rem;
 }
 
 .pokemon__card__inner .icon {
-    font-size: 2em;
-    padding: 0 20px;
+    margin-top: 1px;
+    font-size: 2.4em;
     cursor: pointer;
+    color: white;
+}
+
+
+.action__button {
+    border-radius: 7px;
+    background: #FF3D00;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    color: #FFF;
+    text-align: center;
+    font-size: 2.1875rem;
+    font-family: Podkova;
+    font-weight: 500;
+    letter-spacing: 0.45938rem;
+    text-transform: uppercase;
 }
