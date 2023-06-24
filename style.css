@@ -30,6 +30,15 @@ body {
     padding: 0 1em;
 }
 
+
+.pokemon__card__outer {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    padding: 1em;
+}
+
+
 .pokemon__card__inner .card-title {
     background-color: red;
     width: 100%;
@@ -53,7 +62,7 @@ body {
 
 
 .action__button {
-    width: calc(100% - 2em);
+    margin: 0 auto;
     border-radius: 7px;
     background: #FF3D00;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
@@ -69,9 +78,15 @@ body {
 
 .controls a {
     margin: auto;
-    font-size: 2.4em;
+    font-size: 3em;
     cursor: pointer;
     color: red;
+}
+
+
+
+.controls a:hover {
+    color: var(--card__background);
 
 }
 
