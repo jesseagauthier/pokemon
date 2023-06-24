@@ -19,11 +19,6 @@ body {
     text-transform: capitalize;
 }
 
-.pokemon__card__outer {
-    flex-wrap: wrap;
-    margin: 0 auto;
-}
-
 .pokemon__card {
     margin: 0 auto;
     border-radius: 42.4px;
