@@ -24,7 +24,7 @@
     <main class="container-fluid">
         <h2 class="page__title">can you catch 'em all?</h2>
         <!-- Pokemon Catch Cards mobile -->
-        <div id="carouselExampleControls" class="carousel slide col-12 d-sm-none " data-bs-ride="carousel">
+        <div id="carouselExampleControls" class="carousel slide col-12 d-md-none " data-bs-ride="carousel">
             <div class="carousel-inner">
                 <!-- Pokemon Card #2 -->
                 <div class="col-12 carousel-item active pokemon__card__outer">
@@ -75,11 +75,12 @@
             </div>
         </div>
         <!-- Pokemon Catch Cards Desktop -->
-        <div id="carouseldesktopControls" class="d-none d-sm-block carousel slide col-12" data-bs-ride="carousel">
+        <div id="carouseldesktopControls" class="d-none d-md-block carousel slide col-12 desktop__slider "
+            data-bs-ride="carousel">
             <div class="carousel-inner">
                 <!-- Pokemon Card #2 -->
                 <div class="carousel-item d-flex justify-content-center active">
-                    <div class="active pokemon__card__outer">
+                    <div class="pokemon__card__outer">
                         <div class="col-12 card pokemon__card p-0 mb-3">
                             <div class="card-body pokemon__card__inner p-0">
                                 <h3 class="card-title">Bulbasaur</h3>
@@ -89,9 +90,9 @@
                                 </div>
                             </div>
                         </div>
-                        <button class="action__button btn btn-danger">Catch</button>
+                        <!-- <button class="action__button btn btn-danger">Catch</button> -->
                     </div>
-                    <div class="pokemon__card__outer">
+                    <div class="active pokemon__card__outer">
                         <div class="col-12 card pokemon__card p-0 mb-3">
                             <div class="card-body pokemon__card__inner p-0">
                                 <h3 class="card-title">Test1</h3>
@@ -113,7 +114,7 @@
                                 </div>
                             </div>
                         </div>
-                        <button class="action__button btn btn-danger">Catch</button>
+                        <!-- <button class="action__button btn btn-danger">Catch</button> -->
                     </div>
                 </div>
             </div>

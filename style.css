@@ -20,6 +20,7 @@ body {
 }
 
 .pokemon__card {
+    position: relative;
     margin: 0 auto;
     border-radius: 42.4px;
     background: var(--card__background);
@@ -32,9 +33,6 @@ body {
 
 
 .pokemon__card__outer {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
     padding: 1em;
 }
 
@@ -54,6 +52,9 @@ body {
 }
 
 .pokemon__card__inner .icon {
+    position: absolute;
+    top: 8vh;
+    left: 5%;
     margin-top: 1px;
     font-size: 2.4em;
     cursor: pointer;
@@ -75,6 +76,19 @@ body {
     text-transform: uppercase;
 }
 
+.desktop__slider {
+    position: relative;
+}
+
+
+.controls {
+    top: 85%;
+    position: absolute;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    gap: 50vw;
+}
 
 .controls a {
     margin: auto;
