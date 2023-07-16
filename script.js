@@ -1,154 +1,244 @@
 const displayPokemon = document.getElementById('displayPokemon');
-const caughtCount = document.getElementById('numofPokeleft');
 const displayCaughtPokemon = document.getElementById('caughtcontainer');
-const pokemon = {};
-let pokemonCaught = {};
-let caughtPokemonList = [];
+const numofPokeleft = document.getElementById('numofPokeleft');
+const reloadButton = document.getElementById('reload');
 
-const storedPokemonCaught = localStorage.getItem('pokemonCaught');
+let caughtCount = 0;
+let displayedPokemon = [];
+let pokemonCaught;
 
-if (storedPokemonCaught) {
-  // Parse the stored JSON string into an object
-  pokemonCaught = JSON.parse(storedPokemonCaught);
+reloadButton.addEventListener('click', reset);
+const loadingElement = document.getElementById('loading');
 
-  // Update the caught count
-  caughtCount.textContent = Object.keys(pokemonCaught).length;
+// Retrieve caught Pokemon data from local storage
+pokemonCaught = JSON.parse(localStorage.getItem('caughtPokemon')) || [];
+caughtCount = pokemonCaught.length;
+numofPokeleft.textContent = caughtCount;
 
-  // Display the caught Pokémon
+function reset () {
+  displayedPokemon = {}
+  fetchDataAndUpdatePokemon()
+}
+
+async function fetchDataAndUpdatePokemon() {
+  const updatedPokemonData = await fetchData();
+  let count = Object.keys(displayedPokemon).length;
+  while (count < 6) {
+    const randomIndex = Math.floor(Math.random() * updatedPokemonData.length);
+    const pokemonData = updatedPokemonData.splice(randomIndex, 1)[0];
+    displayedPokemon[pokemonData.pokemonId] = pokemonData;
+    count++;
+  }
+  displayPokemons();
   displayCaughtPokemons();
 }
 
 async function fetchData() {
-  const response = await fetch('https://pokeapi.co/api/v2/pokemon/?limit=20');
-  const json = await response.json();
+  // console.log('Fetching Pokemon');
+  loadingElement.style.display = 'flex';
+  const randomOffset = Math.floor(Math.random() * 100);
+  const response = await fetch(`https://pokeapi.co/api/v2/pokemon/?limit=20&offset=${randomOffset}`);
+  const { results } = await response.json();
+   const fetchedPokemonData = [];
 
-  for (const pokemonData of json.results) {
-    const response = await fetch(pokemonData.url);
+
+  for (const { url } of results) {
+    const response = await fetch(url);
     const pokemonDataFull = await response.json();
 
-    const key = pokemonDataFull.id;
-    const abilities = getRandomElements(pokemonDataFull.abilities.map(ability => ability.ability.name), 3);
-    const moves = getRandomElements(pokemonDataFull.moves.map(moves => moves.move.name), 3);
+    const pokemonMoves = pokemonDataFull.moves.slice(0, 3);
+    const pokemonAbilities = pokemonDataFull.abilities.slice(0, 3)
+    // const disc = pokemonDataFull.flavor_text_entries.indexOf(en)
 
-    pokemon[key] = {
+    const pokemonDataObj = {
       pokemonId: pokemonDataFull.id,
       pokemonName: pokemonDataFull.name,
       pokemonImage: pokemonDataFull.sprites.other.dream_world.front_default,
       pokemonWeight: pokemonDataFull.weight,
-      pokemonAbilities: abilities,
-      pokemonMoves: moves,
       pokemonExperience: pokemonDataFull.base_experience,
+      pokemonMoves,
+      pokemonAbilities,
     };
+
+    const extraInfo = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonDataObj.pokemonId}/`);
+    const extraInfoParsed = await extraInfo.json();
+
+    let englishDescription = '';
+    for (const entry of extraInfoParsed.flavor_text_entries) {
+      if (entry.language.name === 'en') {
+        englishDescription = entry.flavor_text;
+        break;
+      }
+    }
+
+    const disc = englishDescription;
+    pokemonDataObj.info = disc;
+    fetchedPokemonData.push(pokemonDataObj);
   }
 
-  displayPokemons();
-  console.log("Fetched Pokemon");
-  console.log(pokemon);
+  loadingElement.style.display = 'none';
+  return fetchedPokemonData;
 }
-
-function getRandomElements(arr, maxElements) {
-  const shuffled = arr.sort(() => 0.5 - Math.random());
-  return shuffled.slice(0, maxElements);
-}
-
-fetchData();
 
 function displayPokemons() {
-  displayPokemon.innerHTML = ''; // Clear the displayPokemon section
+  displayPokemon.innerHTML = '';
 
-  const pokemonList = Object.values(pokemon).slice(0, 4);
+  for (const pokemonId in displayedPokemon) {
+    if (displayedPokemon.hasOwnProperty(pokemonId)) {
+      const pokemonData = displayedPokemon[pokemonId];
 
-  for (const pokemonData of pokemonList) {
-    const { pokemonName, pokemonImage, pokemonId } = pokemonData;
-
-    displayPokemon.insertAdjacentHTML('beforeend', `
-      <div class="pokemoncard" id="pokemon${pokemonId}">
-        <div class="pokemoncard__container">
-          <div class="pokemoncard__contents">
-            <h3>${pokemonName}</h3>
-            <img class="info" title="Pokemon Information" src="assets/stats.svg">
-            <img class="pokemonimg" src="${pokemonImage}" alt="${pokemonName}">
+      displayPokemon.insertAdjacentHTML(
+          'beforeend',
+          `
+        <div class="pokemoncard uncaught-card" id="pokemon${pokemonId}">
+          <div class="pokemoncard__container">
+            <div class="pokemoncard__contents">
+              <h3>${pokemonData.pokemonName}</h3>
+              <img class="info" id="ability${pokemonId}" data-pokemon-id="${pokemonId}" title="Pokemon Information" src="assets/stats.svg" alt="infobutton">
+              <img class="pokemonimg" src="${pokemonData.pokemonImage}" alt="${pokemonData.pokemonName}" title="${pokemonData.pokemonName}">
+              <div class="ability-list hidden"></div>
+            </div>
           </div>
+          <button id="${pokemonId}" data-source="${pokemonId}" data-pokemonName="${pokemonData.pokemonName}" class="pokemoncard__catchbtn">Catch</button>
         </div>
-        <button class="pokemoncard__catchbtn">Catch</button>
-      </div>
-    `);
-
-    const caughtButton = document.getElementById(`pokemon${pokemonId}`).querySelector('.pokemoncard__catchbtn');
-    caughtButton.addEventListener('click', catchPokemon);
+      `
+      );
+      const catchBTN = document.getElementById(`${pokemonId}`);
+      const abilityFlip = document.getElementById(`ability${pokemonId}`);
+      abilityFlip.addEventListener('click', () => displayAbilities(pokemonId));
+      catchBTN.addEventListener('click', () => catchPokemon(catchBTN));
+    }
   }
 }
 
-function catchPokemon() {
-  const pokemonCard = this.parentNode;
-  const pokemonId = pokemonCard.id.slice(7);
-  const pokemonName = pokemon[pokemonId].pokemonName;
-  const pokemonImage = pokemon[pokemonId].pokemonImage;
+function displayAbilities(pokemonId) {
+  const pokemonImage = document.querySelector(`#pokemon${pokemonId} .pokemonimg`);
+  const abilityList = document.querySelector(`#pokemon${pokemonId} .ability-list`);
 
-  if (Object.keys(pokemonCaught).length >= 4) {
+  if (pokemonImage.style.visibility === 'hidden') {
+    pokemonImage.style.visibility = 'visible';
+    abilityList.classList.add('hidden');
+  } else {
+    pokemonImage.style.visibility = 'hidden';
+    abilityList.classList.remove('hidden');
+
+    abilityList.innerHTML = `
+      <table>
+        <tr>
+          <th>Abilities:</th>
+        </tr>
+        <tr>
+          ${displayedPokemon[pokemonId].pokemonAbilities
+        .map((ability) => `<td>${ability.ability.name}</td>`)
+        .join('')}
+        </tr>
+      </table>
+      <table>
+        <tr>
+          <th>Moves:</th>
+        </tr>
+        <tr>
+          ${displayedPokemon[pokemonId].pokemonMoves
+        .map((move) => `<td>${move.move.name}</td>`)
+        .join('')}
+        </tr>
+      </table>
+    `;
+  }
+}
+
+function displayCaughtAbilities(pokemon) {
+  console.log(pokemon);
+  const pokemonImage = document.querySelector(`#pokemon${pokemon.pokemonId} .pokemonimg`);
+  const abilityList = document.querySelector(`#pokemon${pokemon.pokemonId} .ability-list`);
+
+  if (pokemonImage.style.visibility === 'hidden') {
+    pokemonImage.style.visibility = 'visible';
+    abilityList.classList.add('hidden');
+  } else {
+    pokemonImage.style.visibility = 'hidden';
+    abilityList.classList.remove('hidden');
+
+    abilityList.innerHTML = `
+       <p>XP:  ${pokemon.pokemonExperience}</p>
+         <div>
+         <h6>Abilities</h6>
+           <ul>
+               ${pokemon.pokemonAbilities
+                .map((ability) => `<li>${ability.ability.name}</li>`)
+                .join('')}
+           </ul> 
+          </div>
+        <div>
+        <h6>Moves</h6>
+          <ul>
+           ${pokemon.pokemonMoves
+          .map((move) => `<li>${move.move.name}</li>`)
+          .join('')}
+          </ul>
+        </div>
+      <p>${pokemon.info}</p>
+    `;
+  }
+}
+
+
+function catchPokemon(clickedElement) {
+  const pokemonId = clickedElement.id;
+  if (pokemonCaught.length >= 6) {
+    console.log('Ball Limit Reached');
     return;
   }
+  pokemonCaught.push(displayedPokemon[pokemonId]);
 
-  console.log(`You caught ${pokemonName}!`);
-
-  pokemonCaught[pokemonId] = {
-    pokemonId,
-    pokemonName,
-    pokemonImage,
-  };
-
-  // Save updated caught Pokémon to local storage
-  localStorage.setItem('pokemonCaught', JSON.stringify(pokemonCaught));
-  const caughtPokemonCount = Object.keys(pokemonCaught).length;
-
-  caughtCount.textContent = caughtPokemonCount;
-
-  const lastPokemonIndex = caughtPokemonCount - 1;
-
-  // Add the fade-out class to the caught Pokemon card
-  pokemonCard.classList.add('fade-out');
-
-  // Remove the caught Pokémon from the display after the animation completes
-  setTimeout(() => {
-    pokemonCard.parentNode.removeChild(pokemonCard);
-  }, 600);
-
-  displayCaughtPokemons(lastPokemonIndex);
+  caughtCount++;
+  delete displayedPokemon[pokemonId];
+  numofPokeleft.textContent = caughtCount;
+  localStorage.setItem('caughtPokemon', JSON.stringify(pokemonCaught));
+  fetchDataAndUpdatePokemon();
+  displayPokemons();
 }
 
-function displayCaughtPokemons(replaceIndex) {
-  caughtPokemonList = Object.values(pokemonCaught);
+function displayCaughtPokemons() {
+  caught = JSON.parse(localStorage.getItem('caughtPokemon'));
   displayCaughtPokemon.innerHTML = '';
-
-  for (let i = 0; i < caughtPokemonList.length; i++) {
-    const { pokemonName, pokemonImage, pokemonId } = caughtPokemonList[i];
-
-    displayCaughtPokemon.insertAdjacentHTML('beforeend', `
-      <div class="pokemoncard caught">
-        <div class="pokemoncard__container">
-          <div class="pokemoncard__contents">
-            <h3>${pokemonName}</h3>
-            <img class="info" title="Pokemon Information" src="assets/stats.svg">
-            <img class="pokemonimg" src="${pokemonImage}" alt="${pokemonName}">
+  for (const pokemon of pokemonCaught) {
+    displayCaughtPokemon.insertAdjacentHTML(
+        'beforeend',
+        `
+        <div class="pokemoncard caught" id="pokemon${pokemon.pokemonId}">
+          <div class="pokemoncard__container">
+            <div class="pokemoncard__contents">
+              <h3>${pokemon.pokemonName}</h3>
+              <img class="info" title="Pokemon Information" src="assets/stats.svg" alt="infobtn" id="ability${pokemon.pokemonId}" data-pokemon-id="${pokemon.pokemonId}">
+              <img class="pokemonimg" src="${pokemon.pokemonImage}" alt="${pokemon.pokemonName}" title="${pokemon.pokemonName}">
+              <div class="ability-list hidden"></div>
+            </div>
           </div>
+          <button id="caughtpokemon${pokemon.pokemonId}" class="pokemoncard__catchbtn release">Release</button>
         </div>
-        <button id="caughtpokemon${pokemonId}" class="pokemoncard__catchbtn">Release</button>
-      </div>
-    `);
+      `
+    );
 
-    const releaseButton = document.getElementById(`caughtpokemon${pokemonId}`);
-    releaseButton.addEventListener('click', releasePokemon);
+    const releaseButton = document.getElementById(`caughtpokemon${pokemon.pokemonId}`);
+    releaseButton.addEventListener('click', () => releasePokemon(pokemon.pokemonId));
+
+    const abilityFlip = document.getElementById(`ability${pokemon.pokemonId}`);
+    abilityFlip.addEventListener('click', () => displayCaughtAbilities(pokemon));
   }
 }
 
-function releasePokemon() {
-  const pokemonId = this.id.slice(13);
-  delete pokemonCaught[pokemonId];
-
-  // Save updated caught Pokémon to local storage
-  localStorage.setItem('pokemonCaught', JSON.stringify(pokemonCaught));
-
-  console.log("Released Pokemon: ", pokemonCaught);
-
-  displayCaughtPokemons();
+function releasePokemon(pokemonId) {
+  const index = pokemonCaught.findIndex(pokemon => pokemon.pokemonId === pokemonId);
+  if (index !== -1) {
+    pokemonCaught.splice(index, 1);
+    caughtCount--;
+    numofPokeleft.textContent = caughtCount;
+    localStorage.setItem('caughtPokemon', JSON.stringify(pokemonCaught));
+    displayCaughtPokemons()
+  }
 }
+
+
+fetchDataAndUpdatePokemon();
+localStorage.clear()
