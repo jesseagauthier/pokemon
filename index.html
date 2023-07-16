@@ -21,113 +21,20 @@
 </head>
 
 <body>
+    <div id="numOfPoke"><span id="numofPokeleft">0</span>/4</div>
     <main class="container-fluid">
         <h2 class="page__title">can you catch 'em all?</h2>
-        <!-- Pokemon Catch Cards mobile -->
-        <div id="carouselExampleControls" class="carousel slide col-12 d-md-none " data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <!-- Pokemon Card #2 -->
-                <div class="col-12 carousel-item active pokemon__card__outer">
-                    <div class="col-12 card pokemon__card p-0 mb-3">
-                        <div class="card-body pokemon__card__inner p-0">
-                            <h3 class="card-title">Bulbasaur</h3>
-                            <div class="pokemon__img">
-                                <i class="icon fa-regular fa-circle-info" title="Pokemon Information"></i>
-                                <img class="img-fluid m-auto" src="Assets/Temp.svg" alt="">
-                            </div>
-                        </div>
-                    </div>
-                    <button class="d-none action__button btn btn-danger w-50">Catch</button>
-                </div>
-                <div class="col-12 carousel-item pokemon__card__outer">
-                    <div class="col-12 card pokemon__card p-0 mb-3">
-                        <div class="card-body pokemon__card__inner p-0">
-                            <h3 class="card-title">Test1</h3>
-                            <div class="pokemon__img">
-                                <i class="icon fa-regular fa-circle-info" title="Pokemon Information"></i>
-                                <img class="img-fluid" src="Assets/Temp.svg" alt="">
-                            </div>
-                        </div>
-                    </div>
-                    <button class="d-none action__button btn btn-danger w-50">Catch</button>
-                </div>
-                <div class="col-12 carousel-item pokemon__card__outer">
-                    <div class="col-12 card pokemon__card p-0 mb-3">
-                        <div class="card-body pokemon__card__inner p-0">
-                            <h3 class="card-title">Test2</h3>
-                            <div class="pokemon__img">
-                                <i class="icon fa-regular fa-circle-info" title="Pokemon Information"></i>
-                                <img class="img-fluid" src="Assets/Temp.svg" alt="">
-                            </div>
-                        </div>
-                    </div>
-                    <button class="d-none action__button btn btn-danger w-50">Catch</button>
-                </div>
-            </div>
-            <div class="controls d-flex">
-                <a class="" href="#carouselExampleControls" role="button" data-bs-slide="prev">
-                    <i class="flip fa-solid fa-play"></i>
-                </a>
-                <button class="action__button btn btn-danger m-auto">Catch</button>
-                <a class="" href="#carouselExampleControls" role="button" data-bs-slide="next">
-                    <i class="fa-solid fa-play"></i>
-                </a>
-            </div>
-        </div>
-        <!-- Pokemon Catch Cards Desktop -->
-        <div id="carouseldesktopControls" class="d-none d-md-block carousel slide col-12 desktop__slider "
-            data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <!-- Pokemon Card #2 -->
-                <div class="carousel-item d-flex justify-content-center active">
-                    <div class="pokemon__card__outer">
-                        <div class="col-12 card pokemon__card p-0 mb-3">
-                            <div class="card-body pokemon__card__inner p-0">
-                                <h3 class="card-title">Bulbasaur</h3>
-                                <div class="pokemon__img">
-                                    <i class="icon fa-regular fa-circle-info" title="Pokemon Information"></i>
-                                    <img class="img-fluid m-auto" src="Assets/Temp.svg" alt="">
-                                </div>
-                            </div>
-                        </div>
-                        <!-- <button class="action__button btn btn-danger">Catch</button> -->
-                    </div>
-                    <div class="active pokemon__card__outer">
-                        <div class="col-12 card pokemon__card p-0 mb-3">
-                            <div class="card-body pokemon__card__inner p-0">
-                                <h3 class="card-title">Test1</h3>
-                                <div class="pokemon__img">
-                                    <i class="icon fa-regular fa-circle-info" title="Pokemon Information"></i>
-                                    <img class="img-fluid" src="Assets/Temp.svg" alt="">
-                                </div>
-                            </div>
-                        </div>
-                        <button class="action__button btn btn-danger">Catch</button>
-                    </div>
-                    <div class="pokemon__card__outer">
-                        <div class="col-12 card pokemon__card p-0 mb-3">
-                            <div class="card-body pokemon__card__inner p-0">
-                                <h3 class="card-title">Test2</h3>
-                                <div class="pokemon__img">
-                                    <i class="icon fa-regular fa-circle-info" title="Pokemon Information"></i>
-                                    <img class="img-fluid" src="Assets/Temp.svg" alt="">
-                                </div>
-                            </div>
-                        </div>
-                        <!-- <button class="action__button btn btn-danger">Catch</button> -->
-                    </div>
-                </div>
-            </div>
-            <div class="controls d-flex">
-                <a class="" href="#carouseldesktopControls" role="button" data-bs-slide="prev">
-                    <i class="flip fa-solid fa-play"></i>
-                </a>
-                <a class="" href="#carouseldesktopControls" role="button" data-bs-slide="next">
-                    <i class="fa-solid fa-play"></i>
-                </a>
-            </div>
+        <img src="" alt="">
+        <div id="displayPokemon">
         </div>
     </main>
+    <aside class="caughtPokemon__container">
+        <img src="assets/pokeball.svg" alt="caughtpokemon">
+        <div id="caughtPokemon">
+            <div id="caughtcontainer"></div>
+        </div>
+    </aside>
+    <script async src="script.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>

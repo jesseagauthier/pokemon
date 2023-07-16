@@ -1,6 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Podkova:wght@400;500;600;700;800&display=swap');
+
 :root {
-    --card__radius: 42.4px 42.4px 0px 0px;
+    --card__radius: 42.4px 42.4px;
     --card__background: #574260;
+    --red: #ed5564;
+
 }
 
 body {
@@ -10,100 +14,174 @@ body {
     padding: 1em 0;
 }
 
+#numOfPoke {
+    position: fixed;
+    padding: 23px 16px;
+    font-size: 1.7em;
+    width: 75px;
+    height: 75px;
+    bottom: 10px;
+    right: 10px;
+    background-color: white;
+    border-radius: 100%;
+    z-index: 1000;
+    color: black;
+    text-align: center;
+}
+
+
+
 .page__title {
     margin: .50em 0;
     color: #FFF;
     text-align: center;
     font-size: 3.25rem;
-    font-family: Podkova;
     text-transform: capitalize;
 }
 
-.pokemon__card {
-    position: relative;
+
+#displayPokemon {
+    max-width: 90vw;
     margin: 0 auto;
-    border-radius: 42.4px;
-    background: var(--card__background);
-    padding: 1em;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    gap: 5vh;
 }
 
-.pokemon__card .pokemon__img {
-    padding: 0 1em;
+.pokemoncard {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.5em;
+    width: fit-content;
 }
 
 
-.pokemon__card__outer {
-    padding: 1em;
-}
-
-
-.pokemon__card__inner .card-title {
-    background-color: red;
+.pokemoncard__container {
     width: 100%;
-    text-align: center;
-    color: white;
-    padding: 1rem 0;
+    background-color: var(--card__background);
     border-radius: var(--card__radius);
-    color: #FFF;
+    box-shadow: 0px 3.200000286102295px 3.200000286102295px 0px rgba(0, 0, 0, 0.25);
+}
+
+.pokemoncard__contents {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+}
+
+.pokemoncard__contents h3 {
+    padding: .50em;
     text-align: center;
     font-size: 2rem;
-    font-weight: 500;
-    letter-spacing: 0.42rem;
+    letter-spacing: 0.5rem;
+    background-color: var(--red);
+    border-radius: 42.4px 42.4px 0px 0px;
+    text-transform: capitalize;
+    font-weight: lighter;
 }
 
-.pokemon__card__inner .icon {
-    position: absolute;
-    top: 8vh;
-    left: 5%;
-    margin-top: 1px;
-    font-size: 2.4em;
-    cursor: pointer;
-    color: white;
-}
-
-
-.action__button {
+.pokemoncard__contents .pokemonimg {
     margin: 0 auto;
-    border-radius: 7px;
-    background: #FF3D00;
+    width: 19.2rem;
+    height: 20.95rem;
+    flex-shrink: 0;
+    padding: 1em;
+}
+
+
+
+.info {
+    position: absolute;
+    top: 16%;
+    width: 15%;
+    padding: 10px 10px;
+    font-size: 3em;
+    cursor: pointer;
+    fill: white;
+}
+
+
+.pokemoncard__info {
+    visibility: hidden;
+    display: grid;
+    align-self: center;
+    justify-self: center;
+    position: absolute;
+    background-color: grey;
+    width: 100%;
+    top: 30%;
+    height: 62%;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.pokemoncard__catchbtn {
+    all: unset;
+    width: 15rem;
+    height: 3.9375rem;
+    flex-shrink: 0;
+    border-radius: 0.4375rem;
+    background: var(--red);
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     color: #FFF;
     text-align: center;
     font-size: 2.1875rem;
-    font-family: Podkova;
     font-weight: 500;
     letter-spacing: 0.45938rem;
     text-transform: uppercase;
 }
 
-.desktop__slider {
+/* Pokemon Caught bag */
+
+.caughtPokemon__container {
+    max-width: 60vw;
+    padding: 1em;
     position: relative;
-}
-
-
-.controls {
-    top: 85%;
-    position: absolute;
     display: flex;
-    justify-content: space-around;
-    width: 100%;
-    gap: 50vw;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.5em;
+    margin: 1em auto;
 }
 
-.controls a {
-    margin: auto;
-    font-size: 3em;
-    cursor: pointer;
-    color: red;
+.caughtPokemon__container img {
+    padding: 1em;
+    margin: 0 auto;
+    width: 50%;
 }
 
-
-
-.controls a:hover {
-    color: var(--card__background);
-
+.caughtPokemon__container #caughtPokemon {
+    position: absolute;
+    top: 50%;
+    width: 24.5625rem;
+    min-height: 40vh;
+    flex-shrink: 0;
+    border-radius: 3.125rem 3.125rem 0rem 0rem;
+    background: #FFF;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    z-index: -1;
 }
 
-.flip {
-    transform: rotate(180deg);
+#caughtcontainer {
+    padding-top: 15vh;
+}
+
+.caught {
+    margin: 1em auto;
+    top: 10em;
+}
+
+.fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+}
+
+.fade-in {
+    opacity: 1;
+    transition: opacity 0.5s ease-in;
 }
