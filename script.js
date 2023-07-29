@@ -15,7 +15,7 @@ pokemonCaught = JSON.parse(localStorage.getItem('caughtPokemon')) || [];
 caughtCount = pokemonCaught.length;
 numofPokeleft.textContent = caughtCount;
 
-function reset () {
+function reset() {
   displayedPokemon = {}
   fetchDataAndUpdatePokemon()
 }
@@ -39,7 +39,7 @@ async function fetchData() {
   const randomOffset = Math.floor(Math.random() * 100);
   const response = await fetch(`https://pokeapi.co/api/v2/pokemon/?limit=20&offset=${randomOffset}`);
   const { results } = await response.json();
-   const fetchedPokemonData = [];
+  const fetchedPokemonData = [];
 
 
   for (const { url } of results) {
@@ -88,8 +88,8 @@ function displayPokemons() {
       const pokemonData = displayedPokemon[pokemonId];
 
       displayPokemon.insertAdjacentHTML(
-          'beforeend',
-          `
+        'beforeend',
+        `
         <div class="pokemoncard uncaught-card" id="pokemon${pokemonId}">
           <div class="pokemoncard__container">
             <div class="pokemoncard__contents">
@@ -165,16 +165,16 @@ function displayCaughtAbilities(pokemon) {
          <h6>Abilities</h6>
            <ul>
                ${pokemon.pokemonAbilities
-                .map((ability) => `<li>${ability.ability.name}</li>`)
-                .join('')}
-           </ul> 
+        .map((ability) => `<li>${ability.ability.name}</li>`)
+        .join('')}
+           </ul>
           </div>
         <div>
         <h6>Moves</h6>
           <ul>
            ${pokemon.pokemonMoves
-          .map((move) => `<li>${move.move.name}</li>`)
-          .join('')}
+        .map((move) => `<li>${move.move.name}</li>`)
+        .join('')}
           </ul>
         </div>
       <p>${pokemon.info}</p>
@@ -204,8 +204,8 @@ function displayCaughtPokemons() {
   displayCaughtPokemon.innerHTML = '';
   for (const pokemon of pokemonCaught) {
     displayCaughtPokemon.insertAdjacentHTML(
-        'beforeend',
-        `
+      'beforeend',
+      `
         <div class="pokemoncard caught" id="pokemon${pokemon.pokemonId}">
           <div class="pokemoncard__container">
             <div class="pokemoncard__contents">
@@ -239,6 +239,4 @@ function releasePokemon(pokemonId) {
   }
 }
 
-
 fetchDataAndUpdatePokemon();
-localStorage.clear()

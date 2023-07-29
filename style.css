@@ -75,7 +75,7 @@ main {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 30px 0;
+    gap: 30px;
 }
 
 .pokemoncard {
@@ -84,7 +84,11 @@ main {
     flex-direction: column;
     align-items: center;
     gap: 2.5em;
+    padding: 1em;
     width: fit-content;
+    background-color: white;
+    border-radius: 3.125rem;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
 }
 
 .pokemoncard__container {
@@ -108,7 +112,7 @@ main {
     min-width: 280px;
 }
 
-@media screen  and (min-width: 700px){
+@media screen and (min-width: 700px) {
     .pokemoncard__contents {
         width: 400px;
     }
@@ -138,7 +142,7 @@ main {
     height: 350px;
 }
 
-#caughtcontainer .pokemonimg{
+#caughtcontainer .pokemonimg {
     max-width: 240px;
 }
 
@@ -301,12 +305,12 @@ main {
     0% {
         opacity: 0.2;
     }
+
     50% {
         opacity: 0.6;
     }
+
     100% {
         opacity: 0.2;
     }
 }
-
-
