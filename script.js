@@ -79,22 +79,21 @@ async function fetchData() {
 function displayPokemons() {
   displayPokemon.innerHTML = '';
 
-  for (const pokemonData of displayedPokemon) {
-    const { pokemonId, pokemonName, pokemonImage } = pokemonData;
+  for (const pokemon of displayedPokemon) {
 
     displayPokemon.insertAdjacentHTML(
       'beforeend',
       `
-        <div class="pokemoncard uncaught-card" id="pokemon${pokemonId}">
+        <div class="pokemoncard uncaught-card" id="pokemon${pokemon.pokemonId}">
           <div class="pokemoncard__container">
             <div class="pokemoncard__contents">
-              <h3>${pokemonName}</h3>
-              <img class="info" id="ability${pokemonId}" data-pokemon-id="${pokemonId}" title="Pokemon Information" src="assets/stats.svg" alt="infobutton">
-              <img class="pokemonimg" src="${pokemonImage}" alt="${pokemonName}" title="${pokemonName}">
+              <h3>${pokemon.pokemonName}</h3>
+              <img class="info" id="ability${pokemon.pokemonId}" data-pokemon-id="${pokemon.pokemonId}" title="Pokemon Information" src="assets/stats.svg" alt="infobutton">
+              <img class="pokemonimg" src="${pokemon.pokemonImage}" alt="${pokemon.pokemonName}" title="${pokemon.pokemonName}">
               <div class="ability-list hidden"></div>
             </div>
           </div>
-          <button id="${pokemonId}" data-pokemonid="${pokemonId}" data-pokemonName="${pokemonName}" class="pokemoncard__catchbtn catch">Catch</button>
+          <button id="${pokemon.pokemonId}" data-pokemonid="${pokemon.pokemonId}" data-pokemonName="${pokemon.pokemonName}" class="pokemoncard__catchbtn catch">Catch</button>
         </div>
       `
     );
@@ -113,7 +112,7 @@ function actions(e) {
   // If abilities is clicked
   if (e.target.classList.contains('info')) {
     const pokemonId = e.target.dataset.pokemonId;
-    console.log(pokemonId + ` abilities clicked`);
+    Abilities(pokemonId)
   }
   // If release button is clicked
   if (e.target.classList.contains('release')) {
@@ -138,7 +137,6 @@ function catchPokemon(pokemonId) {
   displayCaughtPokemons()
 }
 
-
 fetchDataAndUpdatePokemon();
 
 function displayCaughtPokemons() {
@@ -148,12 +146,12 @@ function displayCaughtPokemons() {
     displayCaughtPokemon.insertAdjacentHTML(
       'beforeend',
       `
-        <div class="pokemoncard uncaught-card" id="${pokemon.pokemonId}">
+        <div class="pokemoncard uncaught-card" id="pokemon${pokemon.pokemonId}">
           <div class="pokemoncard__container">
             <div class="pokemoncard__contents">
               <h3>${pokemon.pokemonName}</h3>
               <img class="info" title="Pokemon Information" src="assets/stats.svg" alt="infobtn" id="ability${pokemon.pokemonId}" data-pokemon-id="${pokemon.pokemonId}">
-              <img class="pokemonimg" src="${pokemon.pokemonImage}" alt="${pokemon.pokemonName}" title="${pokemon.pokemonName}">
+              <img class="pokemonimg" id="pokemon${pokemon.pokemonId}" src="${pokemon.pokemonImage}" alt="${pokemon.pokemonName}" title="${pokemon.pokemonName}">
               <div class="ability-list hidden"></div>
             </div>
           </div>
@@ -178,72 +176,47 @@ function releasePokemon(pokemonId) {
 }
 
 
-// function displayAbilities(pokemonId) {
-//   const pokemonImage = document.querySelector(`#pokemon${pokemonId} .pokemonimg`);
-//   const abilityList = document.querySelector(`#pokemon${pokemonId} .ability-list`);
+function Abilities(pokemonId) {
 
-//   if (pokemonImage.style.visibility === 'hidden') {
-//     pokemonImage.style.visibility = 'visible';
-//     abilityList.classList.add('hidden');
-//   } else {
-//     pokemonImage.style.visibility = 'hidden';
-//     abilityList.classList.remove('hidden');
+  const abilityList = document.querySelector(`#pokemon${pokemonId} .ability-list`);
+  const pokemonImage = document.querySelector(`#pokemon${pokemonId} .pokemonimg`);
 
-//     abilityList.innerHTML = `
-//       <table>
-//         <tr>
-//           <th>Abilities:</th>
-//         </tr>
-//         <tr>
-//           ${displayedPokemon[pokemonId].pokemonAbilities
-//         .map((ability) => `<td>${ability.ability.name}</td>`)
-//         .join('')}
-//         </tr>
-//       </table>
-//       <table>
-//         <tr>
-//           <th>Moves:</th>
-//         </tr>
-//         <tr>
-//           ${displayedPokemon[pokemonId].pokemonMoves
-//         .map((move) => `<td>${move.move.name}</td>`)
-//         .join('')}
-//         </tr>
-//       </table>
-//     `;
-//   }
-// }
+  if (pokemonImage.style.visibility === 'hidden') {
+    pokemonImage.style.visibility = 'visible';
+    abilityList.classList.add('hidden');
+  } else {
+    pokemonImage.style.visibility = 'hidden';
+    abilityList.classList.remove('hidden');
 
-// function displayCaughtAbilities(pokemon) {
-//   const pokemonImage = document.querySelector(`#pokemon${pokemon.pokemonId} .pokemonimg`);
-//   const abilityList = document.querySelector(`#pokemon${pokemon.pokemonId} .ability-list`);
+    const combinedPokemon = displayedPokemon.concat(pokemonCaught);
+    const pokemon = combinedPokemon.find(pokemon => pokemon.pokemonId === parseInt(pokemonId));
 
-//   if (pokemonImage.style.visibility === 'hidden') {
-//     pokemonImage.style.visibility = 'visible';
-//     abilityList.classList.add('hidden');
-//   } else {
-//     pokemonImage.style.visibility = 'hidden';
-//     abilityList.classList.remove('hidden');
 
-//     abilityList.innerHTML = `
-//        <p>XP:  ${pokemon.pokemonExperience}</p>
-//          <div>
-//          <h6>Abilities</h6>
-//            <ul>
-//                ${pokemon.pokemonAbilities
-//         .map((ability) => `<li>${ability.ability.name}</li>`)
-//         .join('')}
-//            </ul>
-//           </div>
-//         <div>
-//         <h6>Moves</h6>
-//           <ul>
-//            ${pokemon.pokemonMoves
-//         .map((move) => `<li>${move.move.name}</li>`)
-//         .join('')}
-//           </ul>
-//         </div>
-//       <p>${pokemon.info}</p>
-//     `;
-//   }
-// }
+    const pokemonMoves = pokemon.pokemonMoves
+      .map(move => `<li>${move.move.name}</li>`)
+      .join('');
+
+    const pokemonAbilities = pokemon.pokemonAbilities
+      .map(ability => `<li>${ability.ability.name}</li>`)
+      .join('');
+
+    abilityList.innerHTML = `
+      <table>
+        <tr>
+          <th>Abilities:</th>
+          ${pokemonAbilities}
+        </tr>
+        <tr>
+        </tr>
+      </table>
+      <table>
+        <tr>
+          <th>Moves:</th>
+          ${pokemonMoves}
+        </tr>
+        <tr>
+        </tr>
+      </table>
+    `;
+  }
+}
