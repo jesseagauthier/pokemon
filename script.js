@@ -23,7 +23,7 @@ function reset() {
 async function fetchDataAndUpdatePokemon() {
   const updatedPokemonData = await fetchData();
   let count = Object.keys(displayedPokemon).length;
-  while (count < 6) {
+  while (count < 20) {
     const randomIndex = Math.floor(Math.random() * updatedPokemonData.length);
     const pokemonData = updatedPokemonData.splice(randomIndex, 1)[0];
     displayedPokemon[pokemonData.pokemonId] = pokemonData;
