@@ -94,7 +94,7 @@ function displayPokemons() {
               <div class="ability-list hidden"></div>
             </div>
           </div>
-          <button id="${pokemonId}" data-source="${pokemonId}" data-pokemonName="${pokemonName}" class="pokemoncard__catchbtn catch">Catch</button>
+          <button id="${pokemonId}" data-pokemonid="${pokemonId}" data-pokemonName="${pokemonName}" class="pokemoncard__catchbtn catch">Catch</button>
         </div>
       `
     );
@@ -107,11 +107,14 @@ function displayPokemons() {
 function actions(e) {
   // If catch button is clicked
   if (e.target.classList.contains('catch')) {
-    const pokemonId = e.target.dataset.source;
+    const pokemonId = e.target.dataset.pokemonid;
     catchPokemon(pokemonId)
   }
   // If abilities is clicked
-  if (e.target.classList.contains('info')) { }
+  if (e.target.classList.contains('info')) {
+    const pokemonId = e.target.dataset.pokemonId;
+    console.log(pokemonId + ` abilities clicked`);
+  }
   // If release button is clicked
   if (e.target.classList.contains('release')) {
     const pokemonId = e.target.id;
@@ -145,7 +148,7 @@ function displayCaughtPokemons() {
     displayCaughtPokemon.insertAdjacentHTML(
       'beforeend',
       `
-        <div class="pokemoncard uncaught-card" id="pokemon${pokemon.pokemonId}">
+        <div class="pokemoncard uncaught-card" id="${pokemon.pokemonId}">
           <div class="pokemoncard__container">
             <div class="pokemoncard__contents">
               <h3>${pokemon.pokemonName}</h3>
