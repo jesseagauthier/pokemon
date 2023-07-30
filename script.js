@@ -8,6 +8,7 @@ let displayedPokemon = [];
 let pokemonCaught = [];
 
 reloadButton.addEventListener('click', reset);
+
 const loadingElement = document.getElementById('loading');
 
 // Retrieve caught Pokemon data from local storage
@@ -35,6 +36,7 @@ async function fetchDataAndUpdatePokemon() {
 
 async function fetchData() {
   loadingElement.style.display = 'flex';
+
   const randomOffset = Math.floor(Math.random() * 100);
   const response = await fetch(`https://pokeapi.co/api/v2/pokemon/?limit=20&offset=${randomOffset}`);
   const { results } = await response.json();
@@ -44,8 +46,9 @@ async function fetchData() {
     const response = await fetch(url);
     const pokemonDataFull = await response.json();
 
-    const pokemonMoves = pokemonDataFull.moves.slice(0, 3);
-    const pokemonAbilities = pokemonDataFull.abilities.slice(0, 3);
+
+    const pokemonMoves = pokemonDataFull.moves.slice(0, 10);
+    const pokemonAbilities = pokemonDataFull.abilities.slice(0, 10);
 
     const pokemonDataObj = {
       pokemonId: pokemonDataFull.id,
@@ -97,9 +100,10 @@ function displayPokemons() {
         </div>
       `
     );
-    displayPokemon.addEventListener('click', actions);
   }
 }
+
+displayPokemon.addEventListener('click', actions);
 
 // This handles events from each pokemon Card
 
@@ -159,9 +163,9 @@ function displayCaughtPokemons() {
         </div>
       `
     );
-    displayCaughtPokemon.addEventListener('click', actions);
   }
 }
+displayCaughtPokemon.addEventListener('click', actions);
 
 
 function releasePokemon(pokemonId) {
