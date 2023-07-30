@@ -206,7 +206,7 @@ function displayCaughtPokemons() {
     displayCaughtPokemon.insertAdjacentHTML(
       'beforeend',
       `
-        <div class="pokemoncard caught" id="pokemon${pokemon.pokemonId}">
+        <div class="pokemoncard uncaught-card" id="pokemon${pokemon.pokemonId}">
           <div class="pokemoncard__container">
             <div class="pokemoncard__contents">
               <h3>${pokemon.pokemonName}</h3>
