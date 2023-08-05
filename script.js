@@ -1,5 +1,6 @@
 const displayPokemon = document.getElementById('displayPokemon');
 const displayCaughtPokemon = document.getElementById('caughtcontainer');
+const caughtPokemonContainer = document.getElementById('caughtPokemon__container');
 const numofPokeleft = document.getElementById('numofPokeleft');
 const reloadButton = document.getElementById('reload');
 
@@ -15,6 +16,8 @@ const loadingElement = document.getElementById('loading');
 pokemonCaught = JSON.parse(localStorage.getItem('caughtPokemon')) || [];
 caughtCount = pokemonCaught.length;
 numofPokeleft.textContent = caughtCount;
+
+
 
 function reset() {
   displayedPokemon = [];
@@ -80,6 +83,13 @@ async function fetchData() {
 }
 
 function displayPokemons() {
+
+  if (caughtCount == 0) {
+    caughtPokemonContainer.style.display = 'none';
+  } else {
+    caughtPokemonContainer.style.display = 'block';
+  }
+
   displayPokemon.innerHTML = '';
 
   for (const pokemon of displayedPokemon) {
@@ -102,6 +112,9 @@ function displayPokemons() {
     );
   }
 }
+
+console.log(caughtCount)
+
 
 displayPokemon.addEventListener('click', actions);
 
@@ -176,6 +189,7 @@ function releasePokemon(pokemonId) {
     numofPokeleft.textContent = caughtCount;
     localStorage.setItem('caughtPokemon', JSON.stringify(pokemonCaught));
     displayCaughtPokemons()
+    displayPokemons()
   }
 }
 

@@ -213,10 +213,17 @@ main {
     cursor: pointer;
 }
 
-/* Pokemon Caught bag */
+/* Pokemon Caught bag
+
+*/
 
 
-.caughtPokemon__container #caughtPokemon {
+#caughtPokemon__container {
+    visibility: visible;
+}
+
+
+#caughtPokemon__container #caughtPokemon {
     width: 98%;
     display: flex;
     flex-wrap: wrap;
