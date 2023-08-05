@@ -16,7 +16,7 @@ body {
     color: white;
     width: 100%;
     height: 100%;
-    padding: 1em;
+    padding: 1em 0;
 }
 
 .inner-wrapper {
@@ -78,65 +78,46 @@ main {
     gap: 30px;
 }
 
-
 .pokemoncard {
-    flex: 1 0 100%;
-    min-width: 90vw;
+    flex: 1;
+    width: 95vw;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 2.5em;
-    padding: 1em 0;
-    width: fit-content;
+    padding: 10px;
     background-color: white;
     border-radius: 3.125rem;
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+    min-height: 500px;
 }
 
 .pokemoncard__container {
+    width: 100%;
     display: flex;
     flex-direction: column;
-    min-width: 360px;
     margin: 0 auto;
-    max-width: 80vw;
     background-color: var(--card__background);
     border-radius: var(--card__radius);
     box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.25);
 }
 
-
 .pokemoncard__contents {
     display: flex;
+    padding-bottom: 10px;
     position: relative;
     flex-direction: column;
     margin: 0 auto;
-    min-height: 100%;
+    height: 100%;
     width: 100%;
-    min-width: 280px;
 }
 
 
-@media screen and (min-width:780px) {
+@media screen and (min-width: 1400px) {
     .pokemoncard {
-        flex: 0 1 38%;
+        flex: 1 15%;
         padding: 1em;
-        min-width: 38%;
-    }
-
-    .pokemoncard__container {
-        min-width: 100%;
-        height: 100%;
-    }
-}
-
-
-
-
-@media screen and (min-width:1200px) {
-    .pokemoncard {
-        flex: 1 25%;
-        padding: 1em;
-        min-width: 25%;
+        max-width: 500px;
     }
 
     .pokemoncard__container {
@@ -151,7 +132,7 @@ main {
     width: 100%;
     padding: .50em 0;
     text-align: center;
-    font-size: 2rem;
+    font-size: 2.5rem;
     letter-spacing: 0.5rem;
     background-color: var(--red);
     border-radius: 42px 42px 0 0;
@@ -160,34 +141,35 @@ main {
 }
 
 .pokemoncard__contents .pokemonimg {
-    padding: 3em 0;
+    padding: 1.5em;
     width: 100%;
     height: 100%;
 }
 
+.controls {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    padding: 10px;
+}
 
 .info {
-    position: absolute;
-    top: 16%;
-    width: 15%;
-    padding: 10px 10px;
+    max-width: 80px;
     font-size: 3em;
     cursor: pointer;
-    fill: white;
-    z-index: 10000;
+    fill: black;
 }
 
 .info:hover {
     transform: scale(1.2);
 }
 
-.hidden {
-    visibility: hidden;
-}
 
 .pokemoncard__catchbtn {
     all: unset;
-    width: 15rem;
+    width: 13rem;
     height: 3.9375rem;
     flex-shrink: 0;
     border-radius: 0.4375rem;
@@ -213,45 +195,30 @@ main {
     cursor: pointer;
 }
 
-/* Pokemon Caught bag
-
-*/
-
-
-#caughtPokemon__container {
-    visibility: visible;
-}
-
 
 #caughtPokemon__container #caughtPokemon {
-    width: 98%;
-    display: flex;
-    flex-wrap: wrap;
-    padding: 2%;
-    border-radius: 3.125rem;
-    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+    padding: 3em 1em;
+    width: 100%;
     background-color: bisque;
-    border: burlywood 7px solid;
-    justify-content: center;
 }
 
 #caughtcontainer {
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     justify-content: center;
 }
 
+
+#caughtcontainer .pokemoncard {
+    max-width: 500px;
+}
+
 .caught .release:hover {
     background-color: #bc2130;
 }
 
-.caught .info {
-    top: 18%;
-    right: 10px;
-    padding: 1px;
-    width: 40px;
-}
 
 .ability-list {
     display: flex;

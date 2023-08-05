@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Podkova:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
     <!-- Css Reset -->
@@ -16,9 +17,9 @@
 </head>
 
 <body>
-    <div class="inner-wrapper">
+    <div class="">
         <div id="numOfPoke"><a id="scrolltocaught" href="#caughtPokemon"><span id="numofPokeleft">0</span>/6</a></div>
-        <main class="container-fluid">
+        <main class="inner-wrapper">
             <h2 class="page__title">can you catch 'em all?</h2>
             <button class="pokemoncard__catchbtn" id="reload">New Pokemons</button>
             <div id="loading">
@@ -36,7 +37,7 @@
             </div>
         </main>
         <aside id="caughtPokemon__container">
-            <!-- <img id="pokeBall" src="assets/pokeball.svg" alt="caughtpokemon"> -->
+            <h2 class="page__title text-white">Caught Pokemon</h2>
             <div id="caughtPokemon">
                 <div id="caughtcontainer"></div>
             </div>
