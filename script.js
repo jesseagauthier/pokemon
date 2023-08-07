@@ -162,7 +162,7 @@ function catchPokemon(pokemonId) {
 fetchDataAndUpdatePokemon();
 
 function displayCaughtPokemons() {
-	caught = JSON.parse(localStorage.getItem('caughtPokemon'));
+	// const caught = JSON.parse(localStorage.getItem('caughtPokemon'));
 	displayCaughtPokemon.innerHTML = '';
 	for (const pokemon of pokemonCaught) {
 		displayCaughtPokemon.insertAdjacentHTML(
