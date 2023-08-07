@@ -88,12 +88,6 @@ async function fetchData() {
 }
 
 function displayPokemons() {
-  if (caughtCount == 0) {
-    caughtPokemonContainer.style.display = 'none'
-  } else {
-    caughtPokemonContainer.style.display = 'block'
-  }
-
   displayPokemon.innerHTML = ''
 
   for (const pokemon of displayedPokemon) {
@@ -116,9 +110,8 @@ function displayPokemons() {
       `
     )
   }
+  displayPokemon.addEventListener('click', actions)
 }
-
-displayPokemon.addEventListener('click', actions)
 
 function actions(e) {
   // If catch button is clicked
@@ -162,7 +155,13 @@ function catchPokemon(pokemonId) {
 fetchDataAndUpdatePokemon()
 
 function displayCaughtPokemons() {
-  // const caught = JSON.parse(localStorage.getItem('caughtPokemon'));
+  if (caughtCount > 0) {
+    console.log(caughtCount)
+    caughtPokemonContainer.style.display = 'block'
+  } else {
+    caughtPokemonContainer.style.display = 'none'
+  }
+
   displayCaughtPokemon.innerHTML = ''
   for (const pokemon of pokemonCaught) {
     displayCaughtPokemon.insertAdjacentHTML(
@@ -184,8 +183,8 @@ function displayCaughtPokemons() {
       `
     )
   }
+  displayCaughtPokemon.addEventListener('click', actions)
 }
-displayCaughtPokemon.addEventListener('click', actions)
 
 function releasePokemon(pokemonId) {
   const index = pokemonCaught.findIndex(

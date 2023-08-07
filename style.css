@@ -122,7 +122,7 @@ main {
     .pokemoncard {
         flex: 1 15%;
         padding: 1em;
-        max-width: 500px;
+        max-width: 350px;
     }
 
     .pokemoncard__container {
@@ -130,7 +130,6 @@ main {
         height: 100%;
     }
 }
-
 
 .pokemoncard__contents h3 {
     display: block;
@@ -200,6 +199,10 @@ main {
     cursor: pointer;
 }
 
+#caughtPokemon__container {
+    display: none;
+}
+
 
 #caughtPokemon__container #caughtPokemon {
     padding: 3em 1em;
@@ -217,7 +220,7 @@ main {
 
 
 #caughtcontainer .pokemoncard {
-    max-width: 500px;
+    max-width: 350px;
 }
 
 .caught .release:hover {
