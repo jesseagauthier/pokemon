@@ -83,6 +83,7 @@ async function fetchData() {
 
     pokemonDataObj.info = englishDescription
     fetchedPokemonData.push(pokemonDataObj)
+    console.log(fetchedPokemonData.length + `/20`)
   }
 
   loadingElement.style.display = 'none'
@@ -109,10 +110,35 @@ search.addEventListener('input', searchQuery)
 
 function searchQuery() {
   const searchTerm = search.value
-  const matchingPokemon = displayedPokemon.filter(
-    (pokemon) => pokemon.pokemonName === searchTerm
-  )
+
+  const matchingPokemon = displayedPokemon.filter((pokemon) => {
+    return pokemon.pokemonName.toLowerCase().includes(searchTerm.toLowerCase())
+  })
+
   console.log(matchingPokemon)
+  displayPokemon.innerHTML = ''
+
+  for (const pokemon of matchingPokemon) {
+    displayPokemon.insertAdjacentHTML(
+      'beforeend',
+      `
+        <div class="pokemoncard uncaught-card" data-xp="${pokemon.pokemonExperience}"id="pokemon${pokemon.pokemonId}">
+          <div class="pokemoncard__container">
+            <div class="pokemoncard__contents">
+              <h3>${pokemon.pokemonName}<br><span class="mx-4">Exp ${pokemon.pokemonExperience}</span></h3>
+
+              <img class="pokemonimg" src="${pokemon.pokemonImage}" alt="${pokemon.pokemonName}" title="${pokemon.pokemonName}">
+              <div class="ability-list hidden"></div>
+            </div>
+          </div>
+          <div class="controls">
+            <img class="info" id="ability${pokemon.pokemonId}" data-pokemon-id="${pokemon.pokemonId}" title="Pokemon Information" src="assets/stats.svg" alt="infobutton">
+            <button id="${pokemon.pokemonId}" data-pokemonid="${pokemon.pokemonId}" data-pokemonName="${pokemon.pokemonName}" class="pokemoncard__catchbtn catch">Catch</button>
+          </div>
+          </div>
+      `
+    )
+  }
 }
 
 function displayPokemons() {
