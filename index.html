@@ -22,6 +22,28 @@
         <main class="inner-wrapper">
             <h2 class="page__title">can you catch 'em all?</h2>
             <button class="pokemoncard__catchbtn" id="reload">New Pokemons</button>
+            <div class="my-3 flex justify-center">
+                <select id="sort"
+                    class="text-black mx-3 bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2.5 ">
+                    <option selected="selected">Sort By</option>
+                    <option value="experience">Experience</option>
+                    <option value="name">Name</option>
+                </select>
+                <form id="search">
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                            </svg>
+                        </div>
+                        <input type="search" id="searchValue"
+                            class="block w-full px-8 w-100 py-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg"
+                            placeholder="Search for your pokemon" required>
+                    </div>
+                </form>
+            </div>
             <div id="loading">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="red" width="24px" height="24px">
                     <circle cx="12" cy="12" r="10" />

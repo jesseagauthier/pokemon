@@ -2,6 +2,8 @@
 
 const displayPokemon = document.getElementById('displayPokemon')
 const displayCaughtPokemon = document.getElementById('caughtcontainer')
+const sort = document.getElementById('sort')
+const search = document.getElementById('searchValue')
 const caughtPokemonContainer = document.getElementById(
   'caughtPokemon__container'
 )
@@ -87,6 +89,29 @@ async function fetchData() {
   return fetchedPokemonData
 }
 
+sort.addEventListener('change', short)
+function short() {
+  const sortChoice = sort.value
+
+  if (sortChoice === 'experience') {
+    console.log('sorted by XP')
+    displayedPokemon.sort((a, b) => a.pokemonExperience - b.pokemonExperience)
+    displayPokemons()
+  }
+  if (sortChoice === 'name') {
+    console.log('sorted by name')
+    displayedPokemon.sort((a, b) => a.pokemonName.localeCompare(b.pokemonName))
+    displayPokemons()
+  }
+}
+
+search.addEventListener('input', searchQuery)
+
+function searchQuery() {
+  const searchOutput = search.value
+  console.log(searchOutput)
+}
+
 function displayPokemons() {
   displayPokemon.innerHTML = ''
 
@@ -94,10 +119,11 @@ function displayPokemons() {
     displayPokemon.insertAdjacentHTML(
       'beforeend',
       `
-        <div class="pokemoncard uncaught-card" id="pokemon${pokemon.pokemonId}">
+        <div class="pokemoncard uncaught-card" data-xp="${pokemon.pokemonExperience}"id="pokemon${pokemon.pokemonId}">
           <div class="pokemoncard__container">
             <div class="pokemoncard__contents">
-              <h3>${pokemon.pokemonName}</h3>
+              <h3>${pokemon.pokemonName}<br><span class="mx-4">Exp ${pokemon.pokemonExperience}</span></h3>
+
               <img class="pokemonimg" src="${pokemon.pokemonImage}" alt="${pokemon.pokemonName}" title="${pokemon.pokemonName}">
               <div class="ability-list hidden"></div>
             </div>
