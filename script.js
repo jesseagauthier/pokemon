@@ -108,8 +108,11 @@ function short() {
 search.addEventListener('input', searchQuery)
 
 function searchQuery() {
-  const searchOutput = search.value
-  console.log(searchOutput)
+  const searchTerm = search.value
+  const matchingPokemon = displayedPokemon.filter(
+    (pokemon) => pokemon.pokemonName === searchTerm
+  )
+  console.log(matchingPokemon)
 }
 
 function displayPokemons() {
