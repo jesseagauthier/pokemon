@@ -187,7 +187,7 @@ function searchQuery(event) {
                 }
 
                 matchingPokemon.push(pokemon)
-
+                // comment to push
                 // Assuming foundPokemonData contains necessary properties like pokemonExperience, pokemonId, etc.
                 displayPokemon.insertAdjacentHTML(
                   'beforeend',
