@@ -142,7 +142,7 @@ function searchQuery(event) {
         <div class="pokemoncard uncaught-card" data-xp="${pokemon.pokemonExperience}" id="pokemon${pokemon.pokemonId}">
           <div class="pokemoncard__container">
             <div class="pokemoncard__contents">
-              <h3>${pokemon.pokemonName}<br><span class="mx-4">Exp ${pokemon.pokemonExperience}</span></h3>
+              <h3>${pokemon.pokemonName}<br><span class="mx-4 text-xs">Exp ${pokemon.pokemonExperience}</span></h3>
               <img class="pokemonimg" src="${pokemon.pokemonImage}" alt="${pokemon.pokemonName}" title="${pokemon.pokemonName}">
               <div class="ability-list hidden"></div>
             </div>
@@ -223,7 +223,7 @@ function displayMatchedPokemon(matchingPokemon) {
             <div class="pokemoncard uncaught-card" data-xp="${pokemon.pokemonExperience}" id="pokemon${pokemon.pokemonId}">
               <div class="pokemoncard__container">
                 <div class="pokemoncard__contents">
-                  <h3>${pokemon.pokemonName}<br><span class="mx-4">Exp ${pokemon.pokemonExperience}</span></h3>
+                  <h3>${pokemon.pokemonName}<br><span class="text-sm block">XP: ${pokemon.pokemonExperience}</span></h3>
 
                   <img class="pokemonimg" src="${pokemon.pokemonImage}" alt="${pokemon.pokemonName}" title="${pokemon.pokemonName}">
                   <div class="ability-list hidden"></div>
@@ -249,7 +249,7 @@ function displayPokemons() {
         <div class="pokemoncard uncaught-card" data-xp="${pokemon.pokemonExperience}"id="pokemon${pokemon.pokemonId}">
           <div class="pokemoncard__container">
             <div class="pokemoncard__contents">
-              <h3>${pokemon.pokemonName}<br><span class="mx-4">Exp ${pokemon.pokemonExperience}</span></h3>
+              <h3>${pokemon.pokemonName}<br><span class="text-sm block">XP: ${pokemon.pokemonExperience}</span></h3>
 
               <img class="pokemonimg" src="${pokemon.pokemonImage}" alt="${pokemon.pokemonName}" title="${pokemon.pokemonName}">
               <div class="ability-list hidden"></div>
@@ -341,7 +341,7 @@ function displayCaughtPokemons() {
         <div class="pokemoncard" id="pokemon${pokemon.pokemonId}">
           <div class="pokemoncard__container">
             <div class="pokemoncard__contents">
-              <h3>${pokemon.pokemonName}</h3>
+              <h3 class="">${pokemon.pokemonName}<span class="text-sm block">XP: ${pokemon.pokemonExperience}</span></h3>
               <img class="pokemonimg" id="pokemon${pokemon.pokemonId}" src="${pokemon.pokemonImage}" alt="${pokemon.pokemonName}" title="${pokemon.pokemonName}">
               <div class="ability-list hidden"></div>
             </div>
