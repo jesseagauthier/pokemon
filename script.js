@@ -3,7 +3,8 @@
 const displayPokemon = document.getElementById('displayPokemon')
 const displayCaughtPokemon = document.getElementById('caughtcontainer')
 const sort = document.getElementById('sort')
-const search = document.getElementById('searchValue')
+const searchBar = document.getElementById('search')
+const searchValue = document.getElementById('searchValue')
 const caughtPokemonContainer = document.getElementById(
   'caughtPokemon__container'
 )
@@ -86,11 +87,13 @@ async function fetchData() {
   }
 
   loadingElement.style.display = 'none'
+  searchBar.style.visibility = 'visible'
+
   return fetchedPokemonData
 }
 
-sort.addEventListener('change', short)
-function short() {
+sort.addEventListener('change', sort)
+function sortPokemon() {
   const sortChoice = sort.value
 
   if (sortChoice === 'experience') {
@@ -105,10 +108,10 @@ function short() {
   }
 }
 
-search.addEventListener('input', searchQuery)
+searchValue.addEventListener('input', searchQuery)
 
 function searchQuery() {
-  const searchTerm = search.value
+  const searchTerm = searchValue.value
 
   const matchingPokemon = displayedPokemon.filter((pokemon) => {
     return pokemon.pokemonName.toLowerCase().includes(searchTerm.toLowerCase())
@@ -140,12 +143,55 @@ function searchQuery() {
       )
     }
   } else {
-    console.log('No pokemon Found')
-    displayPokemon.innerHTML = ''
-    displayPokemon.insertAdjacentHTML(
-      'afterbegin',
-      `<span id="notfound">${searchTerm} was not found in the Grass!</span>`
-    )
+    console.log('No pokemon Found, searching')
+
+    fetch(`https://pokeapi.co/api/v2/pokemon/${searchTerm}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Pokemon not found')
+        }
+        return response.json()
+      })
+      .then((pokemon) => {
+        console.log(pokemon)
+        const pokemonMoves = pokemon.moves.slice(0, 10)
+        const pokemonAbilities = pokemon.abilities.slice(0, 10)
+
+        pokemon = {
+          pokemonId: pokemon.id,
+          pokemonName: pokemon.name,
+          pokemonImage: pokemon.sprites.other.dream_world.front_default,
+          pokemonWeight: pokemon.weight,
+          pokemonExperience: pokemon.base_experience,
+          pokemonAbilities: pokemonAbilities,
+          pokemonMoves: pokemonMoves,
+        }
+
+        console.log(matchingPokemon)
+
+        displayPokemon.insertAdjacentHTML(
+          'beforeend',
+          `
+        <div class="pokemoncard uncaught-card" data-xp="${pokemon.pokemonExperience}"id="pokemon${pokemon.pokemonId}">
+          <div class="pokemoncard__container">
+            <div class="pokemoncard__contents">
+              <h3>${pokemon.pokemonName}<br><span class="mx-4">Exp ${pokemon.pokemonExperience}</span></h3>
+
+              <img class="pokemonimg" src="${pokemon.pokemonImage}" alt="${pokemon.pokemonName}" title="${pokemon.pokemonName}">
+              <div class="ability-list hidden"></div>
+            </div>
+          </div>
+          <div class="controls">
+            <img class="info" id="ability${pokemon.pokemonId}" data-pokemon-id="${pokemon.pokemonId}" title="Pokemon Information" src="assets/stats.svg" alt="infobutton">
+            <button id="${pokemon.pokemonId}" data-pokemonid="${pokemon.pokemonId}" data-pokemonName="${pokemon.pokemonName}" class="pokemoncard__catchbtn catch">Catch</button>
+          </div>
+          </div>
+      `
+        )
+      })
+      .catch((error) => {
+        console.error(error)
+      })
   }
 }
 

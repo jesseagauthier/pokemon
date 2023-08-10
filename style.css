@@ -194,6 +194,10 @@ main {
     text-align: center;
 }
 
+#search {
+    visibility: hidden;
+}
+
 #reload {
     min-width: fit-content;
     padding: 0 1em;
