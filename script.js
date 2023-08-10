@@ -1,7 +1,7 @@
 'use strict'
 let pokemon = {}
 let pokemonSearchList = []
-let matchingPokemon = []
+let matchingPokemon
 const displayPokemon = document.getElementById('displayPokemon')
 const displayCaughtPokemon = document.getElementById('caughtcontainer')
 const sort = document.getElementById('sort')
@@ -99,24 +99,27 @@ sort.addEventListener('change', sortPokemon)
 
 function sortPokemon() {
   const sortChoice = sort.value
-  if (searchActive === false && sortChoice === 'experience') {
-    displayedPokemon.sort((b, a) => a.pokemonExperience - b.pokemonExperience)
-    displayPokemons()
-  }
-  if (searchActive === false && sortChoice === 'name') {
-    displayedPokemon.sort((a, b) => a.pokemonName.localeCompare(b.pokemonName))
-    displayPokemons()
+
+  if (sortChoice === 'experience') {
+    if (!searchActive) {
+      displayedPokemon.sort((a, b) => b.pokemonExperience - a.pokemonExperience)
+      displayPokemons(displayedPokemon)
+    } else {
+      matchingPokemon.sort((a, b) => b.pokemonExperience - a.pokemonExperience)
+      displayMatchedPokemon(matchingPokemon)
+    }
   }
 
-  if (searchActive === true && sortChoice === 'experience') {
-    matchingPokemon.sort((b, a) => a.pokemonExperience - b.pokemonExperience)
-    displayMatchedPokemon()
-    console.log('Search sort by Xp ')
-  }
-
-  if (searchActive === true && sortChoice === 'name') {
-    matchingPokemon.sort((a, b) => a.pokemonName.localeCompare(b.pokemonName))
-    console.log('Search sort by name ')
+  if (sortChoice === 'name') {
+    if (!searchActive) {
+      displayedPokemon.sort((a, b) =>
+        a.pokemonName.localeCompare(b.pokemonName)
+      )
+      displayPokemons(displayedPokemon)
+    } else {
+      matchingPokemon.sort((a, b) => a.pokemonName.localeCompare(b.pokemonName))
+      displayMatchedPokemon(matchingPokemon)
+    }
   }
 }
 
@@ -211,7 +214,6 @@ function searchQuery(event) {
       })
   }
 }
-// Assuming foundPokemonData contains necessary properties like pokemonExperience, pokemonId, etc.
 
 function displayMatchedPokemon(matchingPokemon) {
   displayPokemon.innerHTML = ''
