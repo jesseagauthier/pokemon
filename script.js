@@ -187,7 +187,6 @@ function searchQuery(event) {
                 }
 
                 matchingPokemon.push(pokemon)
-                // comment to push
                 // Assuming foundPokemonData contains necessary properties like pokemonExperience, pokemonId, etc.
                 displayPokemon.insertAdjacentHTML(
                   'beforeend',
@@ -286,13 +285,13 @@ function catchPokemon(pokemonId) {
     )
     console.log(foundSearchedPokemon)
 
-    // if (foundSearchedPokemon !== undefined) {
-    //   pokemonCaught.push(foundSearchedPokemon)
-    //   console.log('Caught (Searched):', foundSearchedPokemon)
-    // } else {
-    //   console.log('Pokemon Not Found')
-    //   return
-    // }
+    if (foundSearchedPokemon !== undefined) {
+      pokemonCaught.push(foundSearchedPokemon)
+      console.log('Caught (Searched):', foundSearchedPokemon)
+    } else {
+      console.log('Pokemon Not Found')
+      return
+    }
   }
 
   caughtCount++
