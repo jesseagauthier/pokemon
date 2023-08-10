@@ -59,8 +59,8 @@ async function fetchData() {
     const response = await fetch(url)
     const pokemonDataFull = await response.json()
 
-    const pokemonMoves = pokemonDataFull.moves.slice(0, 10)
-    const pokemonAbilities = pokemonDataFull.abilities.slice(0, 10)
+    const pokemonMoves = pokemonDataFull.moves.slice(0, 4)
+    const pokemonAbilities = pokemonDataFull.abilities.slice(0, 4)
 
     const pokemonDataObj = {
       pokemonId: pokemonDataFull.id,
@@ -185,8 +185,8 @@ function searchQuery(event) {
                 foundPokemonData.sprites.other.dream_world.front_default !==
                 null
               ) {
-                const pokemonMoves = foundPokemonData.moves.slice(0, 10)
-                const pokemonAbilities = foundPokemonData.abilities.slice(0, 10)
+                const pokemonMoves = foundPokemonData.moves.slice(0, 4)
+                const pokemonAbilities = foundPokemonData.abilities.slice(0, 4)
                 const pokemon = {
                   pokemonId: foundPokemonData.id,
                   pokemonName: foundPokemonData.name,
@@ -224,9 +224,8 @@ function displayMatchedPokemon(matchingPokemon) {
               <div class="pokemoncard__container">
                 <div class="pokemoncard__contents">
                   <h3>${pokemon.pokemonName}<br><span class="text-sm block">XP: ${pokemon.pokemonExperience}</span></h3>
-
                   <img class="pokemonimg" src="${pokemon.pokemonImage}" alt="${pokemon.pokemonName}" title="${pokemon.pokemonName}">
-                  <div class="ability-list hidden"></div>
+                  <div class="ability-list hidden mt-5"></div>
                 </div>
               </div>
               <div class="controls">
@@ -252,7 +251,7 @@ function displayPokemons() {
               <h3>${pokemon.pokemonName}<br><span class="text-sm block">XP: ${pokemon.pokemonExperience}</span></h3>
 
               <img class="pokemonimg" src="${pokemon.pokemonImage}" alt="${pokemon.pokemonName}" title="${pokemon.pokemonName}">
-              <div class="ability-list hidden"></div>
+              <div class="ability-list hidden mt-5"></div>
             </div>
           </div>
           <div class="controls">
@@ -343,7 +342,7 @@ function displayCaughtPokemons() {
             <div class="pokemoncard__contents">
               <h3 class="">${pokemon.pokemonName}<span class="text-sm block">XP: ${pokemon.pokemonExperience}</span></h3>
               <img class="pokemonimg" id="pokemon${pokemon.pokemonId}" src="${pokemon.pokemonImage}" alt="${pokemon.pokemonName}" title="${pokemon.pokemonName}">
-              <div class="ability-list hidden"></div>
+              <div class="ability-list hidden mt-8"></div>
             </div>
           </div>
           <div class="controls">
@@ -404,7 +403,7 @@ function Abilities(pokemonId) {
       .join('')
 
     abilityList.innerHTML = `
-  <div class="grid grid-cols-2 gap-4 mt-4">
+  <div class="grid grid-cols-2 gap-4">
     <div>
       <h2 class="text-xl font-semibold text-white mb-2">Abilities:</h2>
       <ul class="list-disc pl-4">
