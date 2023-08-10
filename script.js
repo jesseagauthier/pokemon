@@ -97,12 +97,10 @@ function sortPokemon() {
   const sortChoice = sort.value
 
   if (sortChoice === 'experience') {
-    console.log('sorted by XP')
     displayedPokemon.sort((a, b) => a.pokemonExperience - b.pokemonExperience)
     displayPokemons()
   }
   if (sortChoice === 'name') {
-    console.log('sorted by name')
     displayedPokemon.sort((a, b) => a.pokemonName.localeCompare(b.pokemonName))
     displayPokemons()
   }
@@ -111,13 +109,12 @@ function sortPokemon() {
 searchValue.addEventListener('input', searchQuery)
 
 function searchQuery() {
-  const searchTerm = searchValue.value
+  const searchTerm = searchValue.value.replace(/\s+/g, '').toLowerCase()
 
   const matchingPokemon = displayedPokemon.filter((pokemon) => {
     return pokemon.pokemonName.toLowerCase().includes(searchTerm.toLowerCase())
   })
 
-  console.log(matchingPokemon)
   displayPokemon.innerHTML = ''
 
   if (matchingPokemon.length >= 1) {
@@ -143,7 +140,7 @@ function searchQuery() {
       )
     }
   } else {
-    console.log('No pokemon Found, searching')
+    console.log('No pokemon Found, fetching the api')
 
     fetch(`https://pokeapi.co/api/v2/pokemon/${searchTerm}`)
       .then((response) => {
@@ -153,7 +150,6 @@ function searchQuery() {
         return response.json()
       })
       .then((foundpokemon) => {
-        console.log(foundpokemon)
         const pokemonMoves = foundpokemon.moves.slice(0, 10)
         const pokemonAbilities = foundpokemon.abilities.slice(0, 10)
 
@@ -166,8 +162,6 @@ function searchQuery() {
           pokemonAbilities: pokemonAbilities,
           pokemonMoves: pokemonMoves,
         }
-
-        console.log(matchingPokemon)
 
         displayPokemon.insertAdjacentHTML(
           'beforeend',
@@ -246,11 +240,17 @@ function catchPokemon(pokemonId) {
     console.log('Ball Limit Reached')
     return
   }
-  pokemonCaught.push(
-    displayedPokemon.find(
-      (pokemon) => pokemon.pokemonId === parseInt(pokemonId)
-    )
+
+  const foundPokemon = displayedPokemon.find(
+    (pokemon) => pokemon.pokemonId === parseInt(pokemonId)
   )
+
+  if (foundPokemon !== undefined) {
+    pokemonCaught.push(foundPokemon)
+  } else {
+    pokemonCaught.push(pokemon)
+  }
+
   caughtCount++
   displayedPokemon = displayedPokemon.filter(
     (pokemon) => pokemon.pokemonId !== parseInt(pokemonId)
@@ -265,7 +265,6 @@ fetchDataAndUpdatePokemon()
 
 function displayCaughtPokemons() {
   if (caughtCount > 0) {
-    console.log(caughtCount)
     caughtPokemonContainer.style.display = 'block'
   } else {
     caughtPokemonContainer.style.display = 'none'
@@ -331,7 +330,6 @@ function Abilities(pokemonId) {
 
     if (selectedPokemon === undefined) {
       selectedPokemon = pokemon
-      console.log(selectedPokemon)
     }
 
     const pokemonMoves = selectedPokemon.pokemonMoves
