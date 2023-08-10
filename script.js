@@ -1,5 +1,6 @@
 'use strict'
 let pokemon = {}
+let pokemonSearchList = []
 const displayPokemon = document.getElementById('displayPokemon')
 const displayCaughtPokemon = document.getElementById('caughtcontainer')
 const sort = document.getElementById('sort')
@@ -108,25 +109,27 @@ function sortPokemon() {
 
 searchValue.addEventListener('input', searchQuery)
 
-function searchQuery() {
+function searchQuery(event) {
+  event.preventDefault()
   const searchTerm = searchValue.value.replace(/\s+/g, '').toLowerCase()
 
+  // Search the JSON results for the search term
   const matchingPokemon = displayedPokemon.filter((pokemon) => {
-    return pokemon.pokemonName.toLowerCase().includes(searchTerm.toLowerCase())
+    return pokemon.pokemonName.toLowerCase().includes(searchTerm)
   })
 
   displayPokemon.innerHTML = ''
 
   if (matchingPokemon.length >= 1) {
     for (const pokemon of matchingPokemon) {
+      // Display the matching Pokemon information
       displayPokemon.insertAdjacentHTML(
         'beforeend',
         `
-        <div class="pokemoncard uncaught-card" data-xp="${pokemon.pokemonExperience}"id="pokemon${pokemon.pokemonId}">
+        <div class="pokemoncard uncaught-card" data-xp="${pokemon.pokemonExperience}" id="pokemon${pokemon.pokemonId}">
           <div class="pokemoncard__container">
             <div class="pokemoncard__contents">
               <h3>${pokemon.pokemonName}<br><span class="mx-4">Exp ${pokemon.pokemonExperience}</span></h3>
-
               <img class="pokemonimg" src="${pokemon.pokemonImage}" alt="${pokemon.pokemonName}" title="${pokemon.pokemonName}">
               <div class="ability-list hidden"></div>
             </div>
@@ -135,14 +138,15 @@ function searchQuery() {
             <img class="info" id="ability${pokemon.pokemonId}" data-pokemon-id="${pokemon.pokemonId}" title="Pokemon Information" src="assets/stats.svg" alt="infobutton">
             <button id="${pokemon.pokemonId}" data-pokemonid="${pokemon.pokemonId}" data-pokemonName="${pokemon.pokemonName}" class="pokemoncard__catchbtn catch">Catch</button>
           </div>
-          </div>
+        </div>
       `
       )
     }
   } else {
-    console.log('No pokemon Found, fetching the api')
+    console.log('No matching Pokemon found, fetching from API')
 
-    fetch(`https://pokeapi.co/api/v2/pokemon/${searchTerm}`)
+    // Fetch data from the API
+    fetch(`https://pokeapi.co/api/v2/pokemon/?limit=1200`)
       .then((response) => {
         if (!response.ok) {
           throw new Error('Pokemon not found')
@@ -150,38 +154,67 @@ function searchQuery() {
         return response.json()
       })
       .then((foundpokemon) => {
-        const pokemonMoves = foundpokemon.moves.slice(0, 10)
-        const pokemonAbilities = foundpokemon.abilities.slice(0, 10)
+        const pokemonList = foundpokemon.results
 
-        pokemon = {
-          pokemonId: foundpokemon.id,
-          pokemonName: foundpokemon.name,
-          pokemonImage: foundpokemon.sprites.other.dream_world.front_default,
-          pokemonWeight: foundpokemon.weight,
-          pokemonExperience: foundpokemon.base_experience,
-          pokemonAbilities: pokemonAbilities,
-          pokemonMoves: pokemonMoves,
-        }
-
-        displayPokemon.insertAdjacentHTML(
-          'beforeend',
-          `
-        <div class="pokemoncard uncaught-card" data-xp="${pokemon.pokemonExperience}"id="pokemon${pokemon.pokemonId}">
-          <div class="pokemoncard__container">
-            <div class="pokemoncard__contents">
-              <h3>${pokemon.pokemonName}<br><span class="mx-4">Exp ${pokemon.pokemonExperience}</span></h3>
-
-              <img class="pokemonimg" src="${pokemon.pokemonImage}" alt="${pokemon.pokemonName}" title="${pokemon.pokemonName}">
-              <div class="ability-list hidden"></div>
-            </div>
-          </div>
-          <div class="controls">
-            <img class="info" id="ability${pokemon.pokemonId}" data-pokemon-id="${pokemon.pokemonId}" title="Pokemon Information" src="assets/stats.svg" alt="infobutton">
-            <button id="${pokemon.pokemonId}" data-pokemonid="${pokemon.pokemonId}" data-pokemonName="${pokemon.pokemonName}" class="pokemoncard__catchbtn catch">Catch</button>
-          </div>
-          </div>
-      `
+        const matchingPokemon = pokemonList.filter((pokemon) =>
+          pokemon.name.includes(searchTerm)
         )
+
+        console.log('Matching Pokemon:', matchingPokemon)
+
+        matchingPokemon.forEach((pokemon) => {
+          fetch(pokemon.url)
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error('Pokemon Not Found')
+              }
+              return response.json()
+            })
+            .then((foundPokemonData) => {
+              console.log('Pokemon Details:', foundPokemonData)
+              const pokemonMoves = foundPokemonData.moves.slice(0, 10)
+              const pokemonAbilities = foundPokemonData.abilities.slice(0, 10)
+              if (
+                foundPokemonData.sprites.other.dream_world.front_default !==
+                null
+              ) {
+                pokemon = {
+                  pokemonId: foundPokemonData.id,
+                  pokemonName: foundPokemonData.name,
+                  pokemonImage:
+                    foundPokemonData.sprites.other.dream_world.front_default,
+                  pokemonWeight: foundPokemonData.weight,
+                  pokemonExperience: foundPokemonData.base_experience,
+                  pokemonAbilities: pokemonAbilities,
+                  pokemonMoves: pokemonMoves,
+                }
+
+                // Assuming foundPokemonData contains necessary properties like pokemonExperience, pokemonId, etc.
+                displayPokemon.insertAdjacentHTML(
+                  'beforeend',
+                  `
+            <div class="pokemoncard uncaught-card" data-xp="${pokemon.pokemonExperience}" id="pokemon${pokemon.pokemonId}">
+              <div class="pokemoncard__container">
+                <div class="pokemoncard__contents">
+                  <h3>${pokemon.pokemonName}<br><span class="mx-4">Exp ${pokemon.pokemonExperience}</span></h3>
+
+                  <img class="pokemonimg" src="${pokemon.pokemonImage}" alt="${pokemon.pokemonName}" title="${pokemon.pokemonName}">
+                  <div class="ability-list hidden"></div>
+                </div>
+              </div>
+              <div class="controls">
+                <img class="info" id="ability${pokemon.pokemonId}" data-pokemon-id="${pokemon.pokemonId}" title="Pokemon Information" src="assets/stats.svg" alt="infobutton">
+                <button id="${pokemon.pokemonId}" data-pokemonid="${pokemon.pokemonId}" data-pokemonName="${pokemon.pokemonName}" class="pokemoncard__catchbtn catch">Catch</button>
+              </div>
+            </div>
+            `
+                )
+              }
+            })
+            .catch((error) => {
+              console.error(error)
+            })
+        })
       })
       .catch((error) => {
         console.error(error)
