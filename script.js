@@ -103,10 +103,11 @@ function sortPokemon() {
   if (sortChoice === 'experience') {
     if (!searchActive) {
       displayedPokemon.sort((a, b) => b.pokemonExperience - a.pokemonExperience)
-      displayPokemons(displayedPokemon)
+      displayPokemons()
     } else {
       matchingPokemon.sort((a, b) => b.pokemonExperience - a.pokemonExperience)
       displayMatchedPokemon(matchingPokemon)
+      console.log(matchingPokemon)
     }
   }
 
@@ -115,10 +116,11 @@ function sortPokemon() {
       displayedPokemon.sort((a, b) =>
         a.pokemonName.localeCompare(b.pokemonName)
       )
-      displayPokemons(displayedPokemon)
+      displayPokemons()
     } else {
       matchingPokemon.sort((a, b) => a.pokemonName.localeCompare(b.pokemonName))
       displayMatchedPokemon(matchingPokemon)
+      console.log(matchingPokemon)
     }
   }
 }
