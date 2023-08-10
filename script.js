@@ -1,5 +1,5 @@
 'use strict'
-
+let pokemon = {}
 const displayPokemon = document.getElementById('displayPokemon')
 const displayCaughtPokemon = document.getElementById('caughtcontainer')
 const sort = document.getElementById('sort')
@@ -152,17 +152,17 @@ function searchQuery() {
         }
         return response.json()
       })
-      .then((pokemon) => {
-        console.log(pokemon)
-        const pokemonMoves = pokemon.moves.slice(0, 10)
-        const pokemonAbilities = pokemon.abilities.slice(0, 10)
+      .then((foundpokemon) => {
+        console.log(foundpokemon)
+        const pokemonMoves = foundpokemon.moves.slice(0, 10)
+        const pokemonAbilities = foundpokemon.abilities.slice(0, 10)
 
         pokemon = {
-          pokemonId: pokemon.id,
-          pokemonName: pokemon.name,
-          pokemonImage: pokemon.sprites.other.dream_world.front_default,
-          pokemonWeight: pokemon.weight,
-          pokemonExperience: pokemon.base_experience,
+          pokemonId: foundpokemon.id,
+          pokemonName: foundpokemon.name,
+          pokemonImage: foundpokemon.sprites.other.dream_world.front_default,
+          pokemonWeight: foundpokemon.weight,
+          pokemonExperience: foundpokemon.base_experience,
           pokemonAbilities: pokemonAbilities,
           pokemonMoves: pokemonMoves,
         }
@@ -325,15 +325,20 @@ function Abilities(pokemonId) {
     abilityList.classList.remove('hidden')
 
     const combinedPokemon = displayedPokemon.concat(pokemonCaught)
-    const pokemon = combinedPokemon.find(
+    let selectedPokemon = combinedPokemon.find(
       (pokemon) => pokemon.pokemonId === parseInt(pokemonId)
     )
 
-    const pokemonMoves = pokemon.pokemonMoves
+    if (selectedPokemon === undefined) {
+      selectedPokemon = pokemon
+      console.log(selectedPokemon)
+    }
+
+    const pokemonMoves = selectedPokemon.pokemonMoves
       .map((move) => `<li class="text-white">${move.move.name}</li>`)
       .join('')
 
-    const pokemonAbilities = pokemon.pokemonAbilities
+    const pokemonAbilities = selectedPokemon.pokemonAbilities
       .map((ability) => `<li class="text-white">${ability.ability.name}</li>`)
       .join('')
 
