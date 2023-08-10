@@ -1,12 +1,13 @@
 'use strict'
 let pokemon = {}
 let pokemonSearchList = []
-let matchingPokemon
+let matchingPokemon = []
 const displayPokemon = document.getElementById('displayPokemon')
 const displayCaughtPokemon = document.getElementById('caughtcontainer')
 const sort = document.getElementById('sort')
 const searchBar = document.getElementById('search')
 const searchValue = document.getElementById('searchValue')
+let searchActive = Boolean
 const caughtPokemonContainer = document.getElementById(
   'caughtPokemon__container'
 )
@@ -94,17 +95,28 @@ async function fetchData() {
   return fetchedPokemonData
 }
 
-sort.addEventListener('change', sort)
+sort.addEventListener('change', sortPokemon)
+
 function sortPokemon() {
   const sortChoice = sort.value
-
-  if (sortChoice === 'experience') {
-    displayedPokemon.sort((a, b) => a.pokemonExperience - b.pokemonExperience)
+  if (searchActive === false && sortChoice === 'experience') {
+    displayedPokemon.sort((b, a) => a.pokemonExperience - b.pokemonExperience)
     displayPokemons()
   }
-  if (sortChoice === 'name') {
+  if (searchActive === false && sortChoice === 'name') {
     displayedPokemon.sort((a, b) => a.pokemonName.localeCompare(b.pokemonName))
     displayPokemons()
+  }
+
+  if (searchActive === true && sortChoice === 'experience') {
+    matchingPokemon.sort((b, a) => a.pokemonExperience - b.pokemonExperience)
+    displayMatchedPokemon()
+    console.log('Search sort by Xp ')
+  }
+
+  if (searchActive === true && sortChoice === 'name') {
+    matchingPokemon.sort((a, b) => a.pokemonName.localeCompare(b.pokemonName))
+    console.log('Search sort by name ')
   }
 }
 
@@ -145,7 +157,7 @@ function searchQuery(event) {
     }
   } else {
     console.log('No matching Pokemon found, fetching from API')
-
+    searchActive = true
     // Fetch data from the API
     fetch(`https://pokeapi.co/api/v2/pokemon/?limit=1200`)
       .then((response) => {
@@ -155,12 +167,12 @@ function searchQuery(event) {
         return response.json()
       })
       .then((foundpokemon) => {
-        const pokemonList = foundpokemon.results
+        let pokemonList = foundpokemon.results
 
-        matchingPokemon = pokemonList.filter((pokemon) =>
+        let searchList = pokemonList.filter((pokemon) =>
           pokemon.name.includes(searchTerm)
         )
-        matchingPokemon.forEach((pokemon) => {
+        searchList.forEach((pokemon) => {
           fetch(pokemon.url)
             .then((response) => {
               if (!response.ok) {
@@ -169,12 +181,12 @@ function searchQuery(event) {
               return response.json()
             })
             .then((foundPokemonData) => {
-              const pokemonMoves = foundPokemonData.moves.slice(0, 10)
-              const pokemonAbilities = foundPokemonData.abilities.slice(0, 10)
               if (
                 foundPokemonData.sprites.other.dream_world.front_default !==
                 null
               ) {
+                const pokemonMoves = foundPokemonData.moves.slice(0, 10)
+                const pokemonAbilities = foundPokemonData.abilities.slice(0, 10)
                 const pokemon = {
                   pokemonId: foundPokemonData.id,
                   pokemonName: foundPokemonData.name,
@@ -185,12 +197,29 @@ function searchQuery(event) {
                   pokemonAbilities: pokemonAbilities,
                   pokemonMoves: pokemonMoves,
                 }
-
                 matchingPokemon.push(pokemon)
-                // Assuming foundPokemonData contains necessary properties like pokemonExperience, pokemonId, etc.
-                displayPokemon.insertAdjacentHTML(
-                  'beforeend',
-                  `
+                displayMatchedPokemon(matchingPokemon)
+              }
+            })
+            .catch((error) => {
+              console.error(error)
+            })
+        })
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  }
+}
+// Assuming foundPokemonData contains necessary properties like pokemonExperience, pokemonId, etc.
+
+function displayMatchedPokemon(matchingPokemon) {
+  displayPokemon.innerHTML = ''
+
+  for (pokemon of matchingPokemon) {
+    displayPokemon.insertAdjacentHTML(
+      'beforeend',
+      `
             <div class="pokemoncard uncaught-card" data-xp="${pokemon.pokemonExperience}" id="pokemon${pokemon.pokemonId}">
               <div class="pokemoncard__container">
                 <div class="pokemoncard__contents">
@@ -206,23 +235,13 @@ function searchQuery(event) {
               </div>
             </div>
             `
-                )
-              }
-            })
-            .catch((error) => {
-              console.error(error)
-            })
-        })
-      })
-      .catch((error) => {
-        console.error(error)
-      })
+    )
   }
 }
 
 function displayPokemons() {
   displayPokemon.innerHTML = ''
-
+  searchActive = false
   for (const pokemon of displayedPokemon) {
     displayPokemon.insertAdjacentHTML(
       'beforeend',
