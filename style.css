@@ -187,6 +187,13 @@ main {
     text-transform: uppercase;
 }
 
+#notfound {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 2em;
+    text-align: center;
+}
+
 #reload {
     min-width: fit-content;
     padding: 0 1em;

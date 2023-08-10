@@ -83,7 +83,6 @@ async function fetchData() {
 
     pokemonDataObj.info = englishDescription
     fetchedPokemonData.push(pokemonDataObj)
-    console.log(fetchedPokemonData.length + `/20`)
   }
 
   loadingElement.style.display = 'none'
@@ -118,10 +117,11 @@ function searchQuery() {
   console.log(matchingPokemon)
   displayPokemon.innerHTML = ''
 
-  for (const pokemon of matchingPokemon) {
-    displayPokemon.insertAdjacentHTML(
-      'beforeend',
-      `
+  if (matchingPokemon.length >= 1) {
+    for (const pokemon of matchingPokemon) {
+      displayPokemon.insertAdjacentHTML(
+        'beforeend',
+        `
         <div class="pokemoncard uncaught-card" data-xp="${pokemon.pokemonExperience}"id="pokemon${pokemon.pokemonId}">
           <div class="pokemoncard__container">
             <div class="pokemoncard__contents">
@@ -137,6 +137,14 @@ function searchQuery() {
           </div>
           </div>
       `
+      )
+    }
+  } else {
+    console.log('No pokemon Found')
+    displayPokemon.innerHTML = ''
+    displayPokemon.insertAdjacentHTML(
+      'afterbegin',
+      `<span id="notfound">${searchTerm} was not found in the Grass!</span>`
     )
   }
 }
