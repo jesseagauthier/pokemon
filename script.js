@@ -1,6 +1,7 @@
 'use strict'
 let pokemon = {}
 let pokemonSearchList = []
+let matchingPokemon
 const displayPokemon = document.getElementById('displayPokemon')
 const displayCaughtPokemon = document.getElementById('caughtcontainer')
 const sort = document.getElementById('sort')
@@ -114,7 +115,7 @@ function searchQuery(event) {
   const searchTerm = searchValue.value.replace(/\s+/g, '').toLowerCase()
 
   // Search the JSON results for the search term
-  const matchingPokemon = displayedPokemon.filter((pokemon) => {
+  matchingPokemon = displayedPokemon.filter((pokemon) => {
     return pokemon.pokemonName.toLowerCase().includes(searchTerm)
   })
 
@@ -156,12 +157,9 @@ function searchQuery(event) {
       .then((foundpokemon) => {
         const pokemonList = foundpokemon.results
 
-        const matchingPokemon = pokemonList.filter((pokemon) =>
+        matchingPokemon = pokemonList.filter((pokemon) =>
           pokemon.name.includes(searchTerm)
         )
-
-        console.log('Matching Pokemon:', matchingPokemon)
-
         matchingPokemon.forEach((pokemon) => {
           fetch(pokemon.url)
             .then((response) => {
@@ -171,14 +169,13 @@ function searchQuery(event) {
               return response.json()
             })
             .then((foundPokemonData) => {
-              console.log('Pokemon Details:', foundPokemonData)
               const pokemonMoves = foundPokemonData.moves.slice(0, 10)
               const pokemonAbilities = foundPokemonData.abilities.slice(0, 10)
               if (
                 foundPokemonData.sprites.other.dream_world.front_default !==
                 null
               ) {
-                pokemon = {
+                const pokemon = {
                   pokemonId: foundPokemonData.id,
                   pokemonName: foundPokemonData.name,
                   pokemonImage:
@@ -188,6 +185,8 @@ function searchQuery(event) {
                   pokemonAbilities: pokemonAbilities,
                   pokemonMoves: pokemonMoves,
                 }
+
+                matchingPokemon.push(pokemon)
 
                 // Assuming foundPokemonData contains necessary properties like pokemonExperience, pokemonId, etc.
                 displayPokemon.insertAdjacentHTML(
@@ -268,26 +267,39 @@ function actions(e) {
 }
 
 function catchPokemon(pokemonId) {
-  pokemonId = pokemonId
+  console.log(matchingPokemon)
   if (pokemonCaught.length >= 6) {
     console.log('Ball Limit Reached')
     return
   }
 
-  const foundPokemon = displayedPokemon.find(
+  const foundDisplayedPokemon = displayedPokemon.find(
     (pokemon) => pokemon.pokemonId === parseInt(pokemonId)
   )
 
-  if (foundPokemon !== undefined) {
-    pokemonCaught.push(foundPokemon)
+  if (foundDisplayedPokemon !== undefined) {
+    pokemonCaught.push(foundDisplayedPokemon)
+    console.log('Caught:', foundDisplayedPokemon)
   } else {
-    pokemonCaught.push(pokemon)
+    const foundSearchedPokemon = matchingPokemon.find(
+      (pokemon) => pokemon.pokemonId === parseInt(pokemonId)
+    )
+    console.log(foundSearchedPokemon)
+
+    // if (foundSearchedPokemon !== undefined) {
+    //   pokemonCaught.push(foundSearchedPokemon)
+    //   console.log('Caught (Searched):', foundSearchedPokemon)
+    // } else {
+    //   console.log('Pokemon Not Found')
+    //   return
+    // }
   }
 
   caughtCount++
   displayedPokemon = displayedPokemon.filter(
     (pokemon) => pokemon.pokemonId !== parseInt(pokemonId)
   )
+
   numofPokeleft.textContent = caughtCount
   localStorage.setItem('caughtPokemon', JSON.stringify(pokemonCaught))
   displayPokemons()
