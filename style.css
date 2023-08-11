@@ -211,7 +211,7 @@ main {
 
 #reload {
     min-width: fit-content;
-    padding: 0 1em;
+    padding: .10em 1em;
     margin: 1em auto;
     font-size: 1.5rem;
 }
