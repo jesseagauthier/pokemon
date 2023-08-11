@@ -21,8 +21,7 @@ let pokemonCaught = []
 reloadButton.addEventListener('click', reset)
 
 const loadingElement = document.getElementById('loading')
-
-// Retrieve caught Pokemon data from local storage
+const loadTime = document.getElementById('loadtime')
 pokemonCaught = JSON.parse(localStorage.getItem('caughtPokemon')) || []
 caughtCount = pokemonCaught.length
 numofPokeleft.textContent = caughtCount
@@ -33,7 +32,6 @@ function reset() {
 }
 
 async function fetchDataAndUpdatePokemon() {
-  console.time('fetchDataAndUpdatePokemon')
   const updatedPokemonData = await fetchData()
   let count = displayedPokemon.length
   const fetchPromises = []
@@ -70,6 +68,8 @@ async function fetchData() {
   const pokemonDataArray = await Promise.all(fetchPromises)
 
   const fetchedPokemonData = pokemonDataArray.map((pokemonDataFull) => {
+    console.log(fetchedPokemonData)
+
     const pokemonMoves = pokemonDataFull.moves.slice(0, 4)
     const pokemonAbilities = pokemonDataFull.abilities.slice(0, 4)
 
@@ -115,7 +115,8 @@ async function fetchData() {
   const { results } = await response.json()
   const fetchedPokemonData = []
 
-  for (const { url } of results) {
+  for (let i = 0; i < results.length; i++) {
+    const { url } = results[i]
     const response = await fetch(url)
     const pokemonDataFull = await response.json()
 
@@ -147,6 +148,10 @@ async function fetchData() {
 
     pokemonDataObj.info = englishDescription
     fetchedPokemonData.push(pokemonDataObj)
+
+    // Calculate and log fetch progress
+    const progress = ((i + 1) / results.length) * 100
+    loadTime.innerText = `${progress.toFixed(2)}%`
   }
 
   loadingElement.style.display = 'none'
@@ -309,7 +314,6 @@ function displayMatchedPokemon(matchingPokemon) {
 }
 
 function displayPokemons() {
-  console.timeEnd('fetchDataAndUpdatePokemon')
   displayPokemon.innerHTML = ''
   searchActive = false
   for (const pokemon of displayedPokemon) {
