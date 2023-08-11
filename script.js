@@ -125,10 +125,18 @@ function sortPokemon() {
   }
 }
 
-searchValue.addEventListener('input', searchQuery)
+// searchValue.addEventListener('input', function)
 
-function searchQuery(event) {
-  event.preventDefault()
+searchForm.addEventListener('submit', function (event) {
+  event.preventDefault() // Prevent the form from submitting and refreshing the page
+  searchQuery()
+})
+
+searchValue.addEventListener('input', function () {
+  searchQuery()
+})
+
+function searchQuery() {
   const searchTerm = searchValue.value.replace(/\s+/g, '').toLowerCase()
 
   // Search the JSON results for the search term
