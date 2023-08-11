@@ -33,18 +33,79 @@ function reset() {
 }
 
 async function fetchDataAndUpdatePokemon() {
+  console.time('fetchDataAndUpdatePokemon')
   const updatedPokemonData = await fetchData()
   let count = displayedPokemon.length
+  const fetchPromises = []
+
   while (count < 20) {
     const randomIndex = Math.floor(Math.random() * updatedPokemonData.length)
     const pokemonData = updatedPokemonData.splice(randomIndex, 1)[0]
     displayedPokemon.push(pokemonData)
     count++
+    fetchPromises.push(fetchExtraInfo(pokemonData))
   }
+
+  const fetchedExtraInfo = await Promise.all(fetchPromises)
+  fetchedExtraInfo.forEach((extraInfo, index) => {
+    const englishDescription = getEnglishDescription(extraInfo)
+    displayedPokemon[index].info = englishDescription
+  })
+  console.timeEnd('fetchDataAndUpdatePokemon')
   displayPokemons()
   displayCaughtPokemons()
 }
 
+async function fetchData() {
+  loadingElement.style.display = 'flex'
+
+  const randomOffset = Math.floor(Math.random() * 100)
+  const response = await fetch(
+    `https://pokeapi.co/api/v2/pokemon/?limit=20&offset=${randomOffset}`
+  )
+  const { results } = await response.json()
+
+  const fetchPromises = results.map(({ url }) =>
+    fetch(url).then((response) => response.json())
+  )
+  const pokemonDataArray = await Promise.all(fetchPromises)
+
+  const fetchedPokemonData = pokemonDataArray.map((pokemonDataFull) => {
+    const pokemonMoves = pokemonDataFull.moves.slice(0, 4)
+    const pokemonAbilities = pokemonDataFull.abilities.slice(0, 4)
+
+    return {
+      pokemonId: pokemonDataFull.id,
+      pokemonName: pokemonDataFull.name,
+      pokemonImage: pokemonDataFull.sprites.other.dream_world.front_default,
+      pokemonWeight: pokemonDataFull.weight,
+      pokemonExperience: pokemonDataFull.base_experience,
+      pokemonMoves,
+      pokemonAbilities,
+    }
+  })
+
+  loadingElement.style.display = 'none'
+  searchBar.style.visibility = 'visible'
+
+  return fetchedPokemonData
+}
+
+async function fetchExtraInfo(pokemonData) {
+  const extraInfo = await fetch(
+    `https://pokeapi.co/api/v2/pokemon-species/${pokemonData.pokemonId}/`
+  )
+  return extraInfo.json()
+}
+
+function getEnglishDescription(extraInfoParsed) {
+  for (const entry of extraInfoParsed.flavor_text_entries) {
+    if (entry.language.name === 'en') {
+      return entry.flavor_text
+    }
+  }
+  return ''
+}
 async function fetchData() {
   loadingElement.style.display = 'flex'
 
@@ -125,10 +186,8 @@ function sortPokemon() {
   }
 }
 
-// searchValue.addEventListener('input', function)
-
 searchForm.addEventListener('submit', function (event) {
-  event.preventDefault() // Prevent the form from submitting and refreshing the page
+  event.preventDefault()
   searchQuery()
 })
 
