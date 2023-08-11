@@ -51,7 +51,6 @@ async function fetchDataAndUpdatePokemon() {
     const englishDescription = getEnglishDescription(extraInfo)
     displayedPokemon[index].info = englishDescription
   })
-  console.timeEnd('fetchDataAndUpdatePokemon')
   displayPokemons()
   displayCaughtPokemons()
 }
@@ -310,6 +309,7 @@ function displayMatchedPokemon(matchingPokemon) {
 }
 
 function displayPokemons() {
+  console.timeEnd('fetchDataAndUpdatePokemon')
   displayPokemon.innerHTML = ''
   searchActive = false
   for (const pokemon of displayedPokemon) {
