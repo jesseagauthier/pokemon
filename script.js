@@ -273,8 +273,16 @@ function searchQuery() {
                   pokemonAbilities: pokemonAbilities,
                   pokemonMoves: pokemonMoves,
                 }
-                matchingPokemon.push(pokemon)
-                displayMatchedPokemon(matchingPokemon)
+
+                const checkForDuplication = matchingPokemon.find(
+                  (pokemon) => (pokemon.pokemonid = pokemon.pokemonId)
+                )
+                if (checkForDuplication === undefined) {
+                  matchingPokemon.push(pokemon)
+                  displayMatchedPokemon(matchingPokemon)
+                } else {
+                  return
+                }
               }
             })
             .catch((error) => {
