@@ -24,12 +24,14 @@
             <h2 class="page__title">can you catch 'em all?</h2>
             <button class="pokemoncard__catchbtn" id="reload">New Pokemons</button>
             <div id="search" class="my-3 mb-5 flex justify-center">
-                <select id="sort"
-                    class="text-black mx-3 bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2.5 ">
-                    <option selected="selected">Sort By</option>
-                    <option value="experience">Experience</option>
-                    <option value="name">Name</option>
-                </select>
+                <div class="flex items-center">
+                    <select id="sort"
+                        class="text-black mx-3 bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5">
+                        <option selected="selected" disabled>Sort By</option>
+                        <option value="experience">Experience</option>
+                        <option value="name">Name</option>
+                    </select>
+                </div>
                 <form>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">

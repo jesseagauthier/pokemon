@@ -61,3 +61,6 @@ While working on my Pokémon app, I had some problems keeping the Pokémon cards
 Another challenge I faced was placing the Pokéball in the right spot on each card to maintain a consistent look.
 To fix the image size problem, I found a way to make all the Pokémon images the same size by resizing and cropping them while keeping their shape intact. This helped give the cards a nice and polished appearance.
 
+
+#### Part 4:
+

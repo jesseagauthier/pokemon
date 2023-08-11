@@ -199,6 +199,16 @@ main {
     visibility: hidden;
 }
 
+#search select {
+    appearance: none;
+    background-color: white;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25" /></svg>');
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: auto 100%;
+    padding-right: 2.5rem;
+}
+
 #reload {
     min-width: fit-content;
     padding: 0 1em;
