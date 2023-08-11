@@ -211,12 +211,24 @@ main {
 
 #reload {
     min-width: fit-content;
-    padding: .10em 1em;
+    padding: .50em 1em;
     margin: 1em auto;
+    height: 3.9375rem;
+    flex-shrink: 0;
+    border-radius: 0.4375rem;
+    background: var(--red);
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+    color: #FFF;
+    text-align: center;
+    font-size: 2.1875rem;
+    font-weight: 500;
+    letter-spacing: 0.45938rem;
+    text-transform: uppercase;
     font-size: 1.5rem;
 }
 
-.pokemoncard__catchbtn:hover {
+.pokemoncard__catchbtn:hover,
+#reload:hover {
     background-color: #bc2130;
     cursor: pointer;
 }
