@@ -215,7 +215,7 @@ main {
     min-width: fit-content;
     padding: .50em 1em;
     margin: 1em auto;
-    height: 3.9375rem;
+    height: 5rem;
     flex-shrink: 0;
     border-radius: 0.4375rem;
     background: var(--red);
