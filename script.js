@@ -373,18 +373,27 @@ function catchPokemon(pokemonId) {
     return
   }
 
+  const checkForDuplication = pokemonCaught.find(
+    (pokemon) => pokemon.pokemonId === parseInt(pokemonId)
+  )
+  console.log(checkForDuplication)
+
+  if (checkForDuplication !== undefined) {
+    console.log('Duplicate Pokemon')
+    alert('Pokemon Already Caught')
+    return
+  }
+
   const foundDisplayedPokemon = displayedPokemon.find(
     (pokemon) => pokemon.pokemonId === parseInt(pokemonId)
   )
 
   if (foundDisplayedPokemon !== undefined) {
     pokemonCaught.push(foundDisplayedPokemon)
-    console.log('Caught:', foundDisplayedPokemon)
   } else {
     const foundSearchedPokemon = matchingPokemon.find(
       (pokemon) => pokemon.pokemonId === parseInt(pokemonId)
     )
-    console.log(foundSearchedPokemon)
 
     if (foundSearchedPokemon !== undefined) {
       pokemonCaught.push(foundSearchedPokemon)
