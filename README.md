@@ -63,4 +63,4 @@ To fix the image size problem, I found a way to make all the Pokémon images the
 
 
 #### Part 4:
-
+Developing a search function that leveraged an API presented a considerable challenge during the creation of my project. The primary struggle lay in effectively querying and retrieving specific Pokémon data based on user input. Navigating the intricacies of API endpoints and parameters, while ensuring seamless integration with the user interface, proved to be complex. Overcoming this obstacle required careful consideration of API documentation, parsing response data, and handling potential errors or inconsistencies in the search results. The iterative process of refining the search logic, fine-tuning query parameters, and implementing real-time updates to display the matched Pokémon demanded dedicated effort and problem-solving. Ultimately, successfully implementing the search function enriched my experience by enhancing my understanding of API interactions and refining my ability to create dynamic and responsive user interfaces.
