@@ -367,7 +367,6 @@ function actions(e) {
 }
 
 function catchPokemon(pokemonId) {
-  console.log(matchingPokemon)
   if (pokemonCaught.length >= 6) {
     console.log('Ball Limit Reached')
     return
@@ -376,7 +375,6 @@ function catchPokemon(pokemonId) {
   const checkForDuplication = pokemonCaught.find(
     (pokemon) => pokemon.pokemonId === parseInt(pokemonId)
   )
-  console.log(checkForDuplication)
 
   if (checkForDuplication !== undefined) {
     console.log('Duplicate Pokemon')
