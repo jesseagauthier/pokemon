@@ -106,23 +106,39 @@ async function FetchAllPokemonData(fetchedPokemon) {
 function displayPokemons(listOfPokemon) {
   displayPokemon.innerHTML = ''
   for (const pokemon of listOfPokemon) {
+    const abilityList = pokemon.abilities
+      .map((ability) => `<p>${ability.name}</p>`)
+      .join('')
+    const moveList = pokemon.moves.map((move) => `<p>${move.name}</p>`).join('')
+
     displayPokemon.insertAdjacentHTML(
       'beforeend',
       `
-        <div class="pokemoncard uncaught-card" data-xp="${pokemon.xp}"id="pokemon${pokemon.id}">
-          <div class="pokemoncard__container">
-            <div class="pokemoncard__contents">
-              <h3>${pokemon.name}<br><span class="text-sm block">XP: ${pokemon.xp}</span></h3>
-
-              <img class="pokemonimg" src="${pokemon.image}" alt="${pokemon.name}" title="${pokemon.name}">
-              <div class="ability-list hidden mt-5"></div>
-            </div>
-          </div>
-          <div class="controls">
-            <img class="info" id="ability${pokemon.id}" data-pokemon-id="${pokemon.id}" title="Pokemon Information" src="assets/stats.svg" alt="infobutton">
-            <button id="${pokemon.id}}" data-pokemonid="${pokemon.id}}" data-pokemonName="${pokemon.name}" class="pokemoncard__catchbtn catch">Catch</button>
-          </div>
-          </div>
+      <div class="pokemoncard" data-xp="${pokemon.xp}" id="pokemon${pokemon.id}">
+        <div class="pokemoncard__inner">
+            <h3>${pokemon.name}<br></h3>
+            <img class="pokemonimg" src="${pokemon.image}" alt="${pokemon.name}" title="${pokemon.name}">
+        </div>
+        <div class="abilities bg-yellow-400 text-black w-full">
+          <table class="">
+            <tr>
+              <th class="py-2"><h2 class="text-xl font-semibold">Abilities</h2></th>
+              <td class="py-2" colspan="2">${abilityList}</td>
+            </tr>
+            <tr>
+              <th class="py-2"><h2 class="text-xl font-semibold">Moves</h2></th>
+              <td class="py-2" colspan="2">${moveList}</td>
+            </tr>
+            <tr>
+              <th class="py-2"><h2 class="text-xl font-semibold">Experience</h2></th>
+              <td class="py-2" colspan="2"><h2 class="text-xl">${pokemon.xp}</h2></td>
+            </tr>
+          </table>
+        </div>
+        <div class="controls">
+          <button id="${pokemon.id}" data-pokemonid="${pokemon.id}" data-pokemonName="${pokemon.name}" class="pokemoncard__catchbtn catch">Catch</button>
+        </div>
+      </div>
       `
     )
   }
