@@ -298,7 +298,7 @@ function searchQuery() {
 
 function displayMatchedPokemon(matchingPokemon) {
   displayPokemon.innerHTML = ''
-
+  //
   for (pokemon of matchingPokemon) {
     displayPokemon.insertAdjacentHTML(
       'beforeend',
