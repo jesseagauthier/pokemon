@@ -10,6 +10,7 @@ const caughtPokemonContainer = document.getElementById(
 const numofPokeleft = document.getElementById('numofPokeleft')
 
 const listOfPokemon = []
+const listOfCaughtPokemon = []
 
 fetchData()
 
@@ -135,10 +136,29 @@ function displayPokemons(listOfPokemon) {
         </div>
         <div class="controls">
           <p>HP<span class="">${pokemon.xp}</span></p>
-          <button id="${pokemon.id}" data-pokemonid="${pokemon.id}" data-pokemonName="${pokemon.name}" class="pokemoncard__catchbtn catch">Catch</button>
+          <button data-pokemonid="${pokemon.id}" data-action="catch" class="pokemoncard__catchbtn catch">Catch</button>
         </div>
       </div>
       `
     )
+    displayPokemon.addEventListener('click', actions)
+  }
+}
+
+function actions(e) {
+  const action = e.target.dataset.action
+  if (action === 'catch') {
+    const pokemonId = parseInt(e.target.dataset.pokemonid, 10)
+    const foundIndex = listOfPokemon.findIndex(
+      (pokemon) => pokemon.id === pokemonId
+    )
+
+    if (foundIndex !== -1) {
+      const foundPokemon = listOfPokemon[foundIndex]
+      listOfCaughtPokemon.unshift(foundPokemon)
+      listOfPokemon.splice(foundIndex, 1)
+      console.log(listOfCaughtPokemon)
+      console.log(listOfPokemon)
+    }
   }
 }
