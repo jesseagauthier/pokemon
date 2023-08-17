@@ -9,6 +9,10 @@
     --grey: #434a54;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: 'Podkova', serif;
     box-sizing: border-box;
@@ -279,10 +283,4 @@ main {
         min-height: 80vh;
         top: 10vh;
     }
-}
-
-
-
-.hidden {
-    visibility: hidden;
 }

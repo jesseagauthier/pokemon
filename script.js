@@ -181,6 +181,7 @@ function Backpack() {
     console.log('Backpack closed')
   } else {
     backPackContainer.style.visibility = 'visible'
+    backPackContainer.scrollIntoView()
     console.log('Backpack open')
   }
 
