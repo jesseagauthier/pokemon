@@ -8,10 +8,20 @@ const caughtPokemonContainer = document.getElementById(
   'caughtPokemon__container'
 )
 const numofPokeleft = document.getElementById('numofPokeleft')
-const reloadButton = document.getElementById('reload')
+
 const listOfPokemon = []
 
 fetchData()
+
+const reloadButton = document.getElementById('reload')
+
+reloadButton.addEventListener('click', refreshPokemon)
+function refreshPokemon() {
+  console.log('Pokemon Refreshed')
+  displayPokemon.innerHTML = ''
+  listOfPokemon.length = 0 // Clear the listOfPokemon array
+  fetchData()
+}
 
 async function fetchData(fetchedPokemon) {
   try {
@@ -106,10 +116,9 @@ async function FetchAllPokemonData(fetchedPokemon) {
 function displayPokemons(listOfPokemon) {
   displayPokemon.innerHTML = ''
   for (const pokemon of listOfPokemon) {
-    const abilityList = pokemon.abilities
-      .map((ability) => `<p>${ability.name}</p>`)
+    const moveList = pokemon.moves
+      .map((move) => `<p class="capitalize ">${move.name}</p>`)
       .join('')
-    const moveList = pokemon.moves.map((move) => `<p>${move.name}</p>`).join('')
 
     displayPokemon.insertAdjacentHTML(
       'beforeend',
@@ -119,28 +128,17 @@ function displayPokemons(listOfPokemon) {
             <h3>${pokemon.name}<br></h3>
             <img class="pokemonimg" src="${pokemon.image}" alt="${pokemon.name}" title="${pokemon.name}">
         </div>
-        <div class="abilities bg-yellow-400 text-black w-full">
-          <table class="">
-            <tr>
-              <th class="py-2"><h2 class="text-xl font-semibold">Abilities</h2></th>
-              <td class="py-2" colspan="2">${abilityList}</td>
-            </tr>
-            <tr>
-              <th class="py-2"><h2 class="text-xl font-semibold">Moves</h2></th>
-              <td class="py-2" colspan="2">${moveList}</td>
-            </tr>
-            <tr>
-              <th class="py-2"><h2 class="text-xl font-semibold">Experience</h2></th>
-              <td class="py-2" colspan="2"><h2 class="text-xl">${pokemon.xp}</h2></td>
-            </tr>
-          </table>
+        <div class="bg-yellow-400 text-black w-full p-2 moves">
+          <div class="flex justify-evenly items-center">
+            ${moveList}
+          </div>
         </div>
         <div class="controls">
+          <p>HP<span class="">${pokemon.xp}</span></p>
           <button id="${pokemon.id}" data-pokemonid="${pokemon.id}" data-pokemonName="${pokemon.name}" class="pokemoncard__catchbtn catch">Catch</button>
         </div>
       </div>
       `
     )
   }
-  displayPokemon.addEventListener('click', actions)
 }
