@@ -1,22 +1,10 @@
 'use strict'
 const displayPokemon = document.getElementById('displayPokemon')
-const displayCaughtPokemon = document.getElementById('caughtcontainer')
-const sort = document.getElementById('sort')
-const searchBar = document.getElementById('search')
-const searchValue = document.getElementById('searchValue')
-const caughtPokemonContainer = document.getElementById(
-  'caughtPokemon__container'
-)
-const numofPokeleft = document.getElementById('numofPokeleft')
-
 const listOfPokemon = []
 const listOfCaughtPokemon = []
 
 fetchData()
 
-const reloadButton = document.getElementById('reload')
-
-reloadButton.addEventListener('click', refreshPokemon)
 function refreshPokemon() {
   console.log('Pokemon Refreshed')
   displayPokemon.innerHTML = ''
@@ -24,7 +12,7 @@ function refreshPokemon() {
   fetchData()
 }
 
-async function fetchData(fetchedPokemon) {
+async function fetchData() {
   try {
     // A random number is chosen to fetch Pokemon from the API using offset pages
     const randomOffset = Math.floor(Math.random() * 100)
@@ -141,24 +129,97 @@ function displayPokemons(listOfPokemon) {
       </div>
       `
     )
-    displayPokemon.addEventListener('click', actions)
   }
 }
 
+displayPokemon.addEventListener('click', actions)
+document.getElementById('openPokemonBag').addEventListener('click', actions)
+document.getElementById('reload').addEventListener('click', actions)
+document.getElementById('caughtContainer').addEventListener('click', actions)
+
 function actions(e) {
   const action = e.target.dataset.action
-  if (action === 'catch') {
-    const pokemonId = parseInt(e.target.dataset.pokemonid, 10)
-    const foundIndex = listOfPokemon.findIndex(
-      (pokemon) => pokemon.id === pokemonId
-    )
 
-    if (foundIndex !== -1) {
-      const foundPokemon = listOfPokemon[foundIndex]
-      listOfCaughtPokemon.unshift(foundPokemon)
-      listOfPokemon.splice(foundIndex, 1)
-      console.log(listOfCaughtPokemon)
-      console.log(listOfPokemon)
-    }
+  if (action === 'refresh') {
+    refreshPokemon()
+  }
+  if (action === 'catch') {
+    catchPokemon(e)
+  }
+  if (action === 'openBag') {
+    Backpack()
+  }
+  if (action === 'release') {
+    console.log('release')
+  }
+}
+
+function catchPokemon(e) {
+  const pokemonId = parseInt(e.target.dataset.pokemonid, 10)
+  const foundIndex = listOfPokemon.findIndex(
+    (pokemon) => pokemon.id === pokemonId
+  )
+
+  if (foundIndex !== -1) {
+    const foundPokemon = listOfPokemon[foundIndex]
+    listOfCaughtPokemon.unshift(foundPokemon)
+    listOfPokemon.splice(foundIndex, 1)
+    displayPokemons(listOfPokemon)
+
+    const string = JSON.stringify(listOfCaughtPokemon)
+    localStorage.setItem('listOfCaughtPokemon', string)
+  }
+  if (listOfPokemon.length <= 0) {
+    refreshPokemon()
+  }
+}
+
+function Backpack() {
+  const backPackContainer = document.getElementById('backPack')
+  if (backPackContainer.style.visibility === 'visible') {
+    backPackContainer.style.visibility = 'hidden'
+    console.log('Backpack closed')
+  } else {
+    backPackContainer.style.visibility = 'visible'
+    console.log('Backpack open')
+  }
+
+  document
+    .getElementById('backPackBtn')
+    .addEventListener('click', displayCaughtPokemon)
+}
+
+function displayCaughtPokemon() {
+  const caughtContainer = document.getElementById('caughtContainer')
+
+  const listOfCaughtPokemon = JSON.parse(
+    localStorage.getItem('listOfCaughtPokemon')
+  )
+
+  for (const pokemon of listOfCaughtPokemon) {
+    const moveList = pokemon.moves
+      .map((move) => `<p class="capitalize ">${move.name}</p>`)
+      .join('')
+
+    caughtContainer.insertAdjacentHTML(
+      'beforeend',
+      `
+      <div class="pokemoncard" data-xp="${pokemon.xp}" id="pokemon${pokemon.id}">
+        <div class="pokemoncard__inner">
+            <h3>${pokemon.name}<br></h3>
+            <img class="pokemonimg" src="${pokemon.image}" alt="${pokemon.name}" title="${pokemon.name}">
+        </div>
+        <div class="bg-yellow-400 text-black w-full p-2 moves">
+          <div class="flex justify-evenly items-center">
+            ${moveList}
+          </div>
+        </div>
+        <div class="controls">
+          <p>HP<span class="">${pokemon.xp}</span></p>
+          <button data-pokemonid="${pokemon.id}" data-action="release" class="pokemoncard__catchbtn catch">Release</button>
+        </div>
+      </div>
+      `
+    )
   }
 }

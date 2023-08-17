@@ -29,7 +29,7 @@ main {
     margin-bottom: 200px;
 }
 
-#numOfPoke {
+#openPokemonBag {
     position: fixed;
     padding: 15px 15px;
     font-size: 1.7em;
@@ -49,7 +49,7 @@ main {
     cursor: pointer;
 }
 
-#numOfPoke:hover {
+#openPokemonBag:hover {
     background-color: var(--red);
     color: white;
     border: 5px solid var(--grey);
@@ -74,7 +74,9 @@ main {
     display: block;
 }
 
-#displayPokemon {
+#displayPokemon,
+#caughtContainer {
+    padding: 1em 0;
     margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
@@ -96,7 +98,9 @@ main {
 }
 
 @media (min-width: 700px) {
-    #displayPokemon {
+
+    #displayPokemon,
+    #caughtContainer {
         grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     }
 
@@ -105,6 +109,10 @@ main {
     }
 }
 
+#caughtContainer {
+    padding: 1em;
+    width: 100%;
+}
 
 
 .pokemoncard__inner {
@@ -237,14 +245,14 @@ main {
 /* Caught Modal */
 #backPack {
     visibility: hidden;
-    position: fixed;
+    position: absolute;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
     z-index: 999;
     width: 90vw;
-    min-height: 50vh;
+    min-height: 80vh;
     left: 5vw;
     top: 25vh;
     padding: 0;
@@ -268,12 +276,8 @@ main {
 
 @media screen and (min-width: 800px) {
     #backPack {
-        width: 50vw;
-        min-height: 50vh;
-        width: 50vw;
-        min-height: 50vh;
-        left: 25vw;
-        top: 25vh;
+        min-height: 80vh;
+        top: 10vh;
     }
 }
 
