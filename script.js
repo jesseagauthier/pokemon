@@ -150,7 +150,7 @@ function actions(e) {
     Backpack()
   }
   if (action === 'release') {
-    console.log('release')
+    releasesCaughtPokemon(e)
   }
 }
 
@@ -191,6 +191,7 @@ function Backpack() {
 
 function displayCaughtPokemon() {
   const caughtContainer = document.getElementById('caughtContainer')
+  caughtContainer.innerHTML = ''
 
   const listOfCaughtPokemon = JSON.parse(
     localStorage.getItem('listOfCaughtPokemon')
@@ -221,5 +222,24 @@ function displayCaughtPokemon() {
       </div>
       `
     )
+  }
+}
+function releasesCaughtPokemon(e) {
+  const listOfCaughtPokemon = JSON.parse(
+    localStorage.getItem('listOfCaughtPokemon')
+  )
+
+  const pokemonId = parseInt(e.target.dataset.pokemonid, 10)
+
+  const foundIndex = listOfCaughtPokemon.findIndex(
+    (pokemon) => pokemon.id === pokemonId
+  )
+
+  if (foundIndex !== -1) {
+    listOfCaughtPokemon.splice(foundIndex, 1)
+
+    const string = JSON.stringify(listOfCaughtPokemon)
+    localStorage.setItem('listOfCaughtPokemon', string)
+    displayCaughtPokemon(listOfCaughtPokemon)
   }
 }
