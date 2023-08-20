@@ -147,10 +147,12 @@ function actions(e) {
     catchPokemon(e)
   }
   if (action === 'openBag') {
-    Backpack()
+    updateBackPack()
+    displayBackpack()
   }
   if (action === 'release') {
     releasesCaughtPokemon(e)
+    updateBackPack()
   }
 }
 
@@ -174,8 +176,27 @@ function catchPokemon(e) {
   }
 }
 
-function Backpack() {
+function updateBackPack() {
+  const listOfCaughtPokemon = JSON.parse(
+    localStorage.getItem('listOfCaughtPokemon')
+  )
+
+  const caughtCounter = document.getElementById('caughtCount')
+  const combinedXPCTN = document.getElementById('combinedXP')
+  const combinedXP = listOfCaughtPokemon.reduce(
+    (accumulator, currentObject) => {
+      return accumulator + currentObject.xp
+    },
+    0
+  )
+
+  caughtCounter.innerText = `${listOfCaughtPokemon.length} / 6 `
+  combinedXPCTN.innerText = `${combinedXP}`
+}
+
+function displayBackpack() {
   const backPackContainer = document.getElementById('backPack')
+
   if (backPackContainer.style.visibility === 'visible') {
     backPackContainer.style.visibility = 'hidden'
     console.log('Backpack closed')
@@ -238,7 +259,6 @@ function releasesCaughtPokemon(e) {
 
   if (foundIndex !== -1) {
     listOfCaughtPokemon.splice(foundIndex, 1)
-
     const string = JSON.stringify(listOfCaughtPokemon)
     localStorage.setItem('listOfCaughtPokemon', string)
     displayCaughtPokemon(listOfCaughtPokemon)

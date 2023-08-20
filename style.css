@@ -255,14 +255,16 @@ main {
     justify-content: space-between;
     align-items: center;
     z-index: 999;
-    width: 90vw;
+    min-width: 50vw;
+    max-width: 90vw;
     min-height: 80vh;
-    left: 5vw;
+    left: 25vw;
     top: 25vh;
     padding: 0;
     background-color: saddlebrown;
     border: solid 1px white;
-    border-radius: 8px;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+    border-radius: 30px;
 }
 
 #backPack h3 {
