@@ -157,22 +157,32 @@ function actions(e) {
 }
 
 function catchPokemon(e) {
-  const pokemonId = parseInt(e.target.dataset.pokemonid, 10)
-  const foundIndex = listOfPokemon.findIndex(
-    (pokemon) => pokemon.id === pokemonId
+  let listOfCaughtPokemon = JSON.parse(
+    localStorage.getItem('listOfCaughtPokemon')
   )
-
-  if (foundIndex !== -1) {
-    const foundPokemon = listOfPokemon[foundIndex]
-    listOfCaughtPokemon.unshift(foundPokemon)
-    listOfPokemon.splice(foundIndex, 1)
-    displayPokemons(listOfPokemon)
-
-    const string = JSON.stringify(listOfCaughtPokemon)
-    localStorage.setItem('listOfCaughtPokemon', string)
+  if (!listOfCaughtPokemon) {
+    listOfCaughtPokemon = []
   }
-  if (listOfPokemon.length <= 0) {
-    refreshPokemon()
+
+  if (listOfCaughtPokemon.length !== 6) {
+    const pokemonId = parseInt(e.target.dataset.pokemonid, 10)
+    const foundIndex = listOfPokemon.findIndex(
+      (pokemon) => pokemon.id === pokemonId
+    )
+    if (foundIndex !== -1) {
+      const foundPokemon = listOfPokemon[foundIndex]
+      listOfCaughtPokemon.unshift(foundPokemon)
+      listOfPokemon.splice(foundIndex, 1)
+      displayPokemons(listOfPokemon)
+
+      const string = JSON.stringify(listOfCaughtPokemon)
+      localStorage.setItem('listOfCaughtPokemon', string)
+    }
+    if (listOfPokemon.length <= 0) {
+      refreshPokemon()
+    }
+  } else {
+    alert('No more pokemon can be caught')
   }
 }
 
