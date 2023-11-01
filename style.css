@@ -165,12 +165,11 @@ main {
 }
 
 .controls p {
-    height: fit-content;
+    min-width: 150px;
     display: block;
     background-color: #facc15;
     color: black;
     padding: .25em .50em;
-    width: fit-content;
     min-width: 100px;
     text-align: center;
     border-radius: 0.4375rem;
@@ -185,7 +184,6 @@ main {
 }
 
 .pokemoncard__catchbtn {
-    height: fit-content;
     padding: 5px 15px;
     border-radius: 0.45rem;
     background: var(--red);
@@ -220,10 +218,9 @@ main {
 }
 
 #reload {
-    min-width: fit-content;
+    min-height: 20px;
     padding: .50em 1em;
     margin: 1em auto;
-    height: fit-content;
     flex-shrink: 0;
     border-radius: 0.4375rem;
     background: var(--red);
