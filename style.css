@@ -165,11 +165,10 @@ main {
 }
 
 .controls p {
-    min-width: 150px;
     display: block;
     background-color: #facc15;
     color: black;
-    padding: .25em .50em;
+    padding: 2px 3px;
     min-width: 100px;
     text-align: center;
     border-radius: 0.4375rem;
