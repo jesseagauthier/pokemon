@@ -1,9 +1,11 @@
 
+# This application is currently being rebuilt to showcase my latest skill set
+
 # Pokemon Web App - Technical Brief
 
 This repository contains a web application that interacts with the PokeAPI to display and manage information about Pokemon creatures. The application allows users to view, search, sort, catch, and release Pokemon.
 
-## Key Features:
+## Key Features
 
 1. **Data Retrieval and Display:**
    - The application fetches Pokemon data from the PokeAPI and updates the displayed Pokemon list.

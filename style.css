@@ -159,8 +159,8 @@ main {
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 0 50px;
+    justify-content: space-between;
+    padding: 0 60px;
     gap: 10px;
 }
 
@@ -168,22 +168,20 @@ main {
     display: block;
     background-color: #facc15;
     color: black;
-    padding: 2px 3px;
-    min-width: 100px;
+    padding: 8px 30px;
     text-align: center;
     border-radius: 0.4375rem;
-    margin-right: auto;
     box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.25);
     font-size: .70em;
 }
 
 .controls p span {
-    margin-left: 4px;
+    margin-right: auto;
     font-size: 1.5rem;
 }
 
 .pokemoncard__catchbtn {
-    padding: 5px 15px;
+    padding: 8px 17px;
     border-radius: 0.45rem;
     background: var(--red);
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
